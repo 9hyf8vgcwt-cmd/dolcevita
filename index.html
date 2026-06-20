@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A portfolio of Italian wines for the trade — explore producers region by region.">
+  <title>Italian Wine Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+/* =================================================================
+   Italian Wine Portfolio — styles.css
+   Palette: near-black ink, paper white, single orange accent.
+   Type:    Archivo (display) · Newsreader (prose) · Space Mono (data)
+   ================================================================= */
+
+:root{
+  --ink:        #1b1b1a;
+  --ink-soft:   #3a3a37;
+  --paper:      #efe9dd;
+  --paper-2:    #e6dfd0;
+  --line:       #cbc4b4;
+  --grey:       #b9b3a6;
+  --grey-2:     #d4cec0;
+  --accent:     #dd4a18;
+  --accent-ink: #b53c14;
+  --focus:      #1b1b1a;
+
+  --pad-x:      clamp(16px, 5vw, 64px);
+  --maxw:       1280px;
+
+  --f-display:  "Archivo", system-ui, sans-serif;
+  --f-body:     "Newsreader", Georgia, serif;
+  --f-mono:     "Space Mono", ui-monospace, monospace;
+
+  --t-fast:     180ms cubic-bezier(.4,.0,.2,1);
+  --t-med:      420ms cubic-bezier(.4,.0,.2,1);
+  --t-zoom:     720ms cubic-bezier(.65,.0,.18,1);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+/* the [hidden] attribute must win over class rules that set display
+   (e.g. .gate / #app use display:flex), otherwise hidden never hides */
+[hidden]{ display:none !important; }
+
+html{ -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:18px;
+  line-height:1.55;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+a{ color:inherit; }
+
+h1,h2,h3,h4{
+  font-family:var(--f-display);
+  font-weight:600;
+  font-stretch:expanded;
+  letter-spacing:.01em;
+  line-height:1.02;
+  margin:0;
+}
+
+button{ font-family:inherit; cursor:pointer; }
+
+.mono{
+  font-family:var(--f-mono);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:.7rem;
+}
+
+.accent{ color:var(--accent); }
+
+/* ---- shell -------------------------------------------------------- */
+#app{ min-height:100dvh; display:flex; flex-direction:column; }
+
+.wrap{
+  width:100%;
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding-inline:var(--pad-x);
+}
+
+/* ---- masthead ----------------------------------------------------- */
+.masthead{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:24px;
+  padding-block:22px 14px;
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.masthead .brand{
+  font-family:var(--f-display);
+  font-stretch:expanded;
+  font-weight:600;
+  font-size:clamp(15px,2vw,19px);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.masthead .brand b{ color:var(--accent); font-weight:600; }
+.masthead .tag{ color:var(--ink-soft); }
+
+.crumbs{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.crumbs button,.crumbs span{
+  background:none; border:none; padding:0;
+  font-family:var(--f-mono);
+  text-transform:uppercase; letter-spacing:.14em; font-size:.66rem;
+  color:var(--ink-soft);
+}
+.crumbs button:hover{ color:var(--accent); }
+.crumbs .sep{ color:var(--grey); }
+.crumbs .here{ color:var(--ink); }
+
+/* ---- login gate --------------------------------------------------- */
+.gate{
+  position:fixed; inset:0; z-index:50;
+  background:var(--ink);
+  color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  padding:var(--pad-x);
+}
+.gate-card{ width:min(420px,100%); }
+.gate-kicker{
+  font-family:var(--f-mono); text-transform:uppercase;
+  letter-spacing:.22em; font-size:.66rem; color:var(--accent);
+  margin-bottom:20px;
+}
+.gate h1{
+  font-size:clamp(30px,6vw,46px);
+  color:var(--paper); margin-bottom:14px;
+}
+.gate p{ color:#cfc8ba; margin:0 0 28px; font-size:16px; }
+.gate-row{ display:flex; gap:10px; }
+.gate input{
+  flex:1; min-width:0;
+  background:transparent;
+  border:1px solid #555049;
+  color:var(--paper);
+  font-family:var(--f-mono); letter-spacing:.1em;
+  padding:14px 16px; font-size:14px;
+  border-radius:2px;
+}
+.gate input:focus{ outline:none; border-color:var(--accent); }
+.gate button{
+  background:var(--accent); color:#fff; border:none;
+  padding:0 22px; border-radius:2px;
+  font-family:var(--f-mono); text-transform:uppercase; letter-spacing:.12em;
+  font-size:.72rem;
+}
+.gate button:hover{ background:var(--accent-ink); }
+.gate-err{ color:#f0a890; font-size:14px; min-height:20px; margin-top:14px; font-family:var(--f-mono); letter-spacing:.04em; }
+.gate-note{ margin-top:34px; font-size:13px; color:#8d877c; line-height:1.5; }
+
+/* ---- view transitions -------------------------------------------- */
+.view{ animation:fade var(--t-med) both; }
+@keyframes fade{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none;} }
+
+/* ---- landing (Italy) --------------------------------------------- */
+.landing{ padding-block:28px 56px; }
+.landing-head{ max-width:62ch; margin-bottom:8px; }
+.landing-head h1{
+  font-size:clamp(34px,7vw,76px);
+  line-height:.96;
+  margin-bottom:18px;
+}
+.landing-head p{ color:var(--ink-soft); font-size:clamp(16px,2.2vw,20px); }
+
+.map-stage{
+  position:relative;
+  margin-top:14px;
+}
+.italy-map{ width:100%; height:auto; display:block; }
+
+/* region polygons */
+.region{ transition:fill var(--t-fast), opacity var(--t-fast); }
+.region.inactive{ fill:var(--grey-2); stroke:var(--paper); stroke-width:1.5; }
+.region.active{ fill:var(--ink); stroke:var(--paper); stroke-width:1.5; cursor:pointer; }
+.region.active:hover,
+.region.active:focus-visible{ fill:var(--accent); outline:none; }
+.region-dot{ fill:var(--accent); cursor:pointer; }
+.region-label{
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; fill:var(--ink); pointer-events:none;
+}
+.region-label.on-dark{ fill:var(--paper); }
+
+.legend{
+  display:flex; gap:22px; flex-wrap:wrap; margin-top:22px;
+  font-family:var(--f-mono); text-transform:uppercase;
+  letter-spacing:.12em; font-size:.64rem; color:var(--ink-soft);
+}
+.legend i{ display:inline-block; width:12px; height:12px; margin-right:8px; vertical-align:-1px; }
+.legend .sw-active{ background:var(--ink); }
+.legend .sw-acc{ background:var(--accent); }
+.legend .sw-off{ background:var(--grey-2); }
+
+/* ---- region view -------------------------------------------------- */
+.region-view{ padding-block:24px 60px; }
+.region-view .r-head{ margin-bottom:18px; }
+.region-view h1{ font-size:clamp(30px,6vw,60px); }
+.region-view .r-sub{ font-family:var(--f-mono); text-transform:uppercase; letter-spacing:.16em; font-size:.72rem; color:var(--accent); margin-top:10px; }
+
+.region-grid{ display:grid; grid-template-columns:1.5fr 1fr; gap:36px; align-items:start; }
+.region-canvas{ background:var(--paper-2); border:1px solid var(--line); border-radius:4px; padding:10px; }
+.region-canvas svg{ width:100%; height:auto; display:block; }
+
+/* context: surrounding land (grey) and sea (blue) */
+.ctx-land{ fill:#e7e5de; stroke:#e7e5de; stroke-width:1.2; }
+.ctx-sea { fill:#dbe6ec; stroke:#dbe6ec; stroke-width:1.2; }
+
+/* mesh borders — weights distinguish coast / region / appellation / commune */
+.mesh-borders line{ stroke-linecap:round; }
+.edge-coast      { stroke:#a7c2cf; stroke-width:1.4; }
+.edge-region     { stroke:#8b8370; stroke-width:1.7; }
+.edge-appellation{ stroke:#8f8773; stroke-width:1.4; }
+.edge-commune    { stroke:#c5beae; stroke-width:0.9; stroke-dasharray:1 3; }
+
+/* labels */
+.r-appellation{ font-family:var(--f-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; fill:#43413b; }
+.r-area       { font-family:var(--f-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; fill:#6f6d64; }
+.r-commune    { font-family:var(--f-mono); font-size:8px;  letter-spacing:.08em; text-transform:uppercase; fill:#86836f; }
+.r-neigh      { font-family:var(--f-mono); font-size:9px;  letter-spacing:.18em; text-transform:uppercase; fill:#aaa69b; }
+.r-neigh-sea  { font-family:var(--f-body); font-style:italic; font-size:12px; letter-spacing:.05em; fill:#8aa7b6; }
+.r-city       { font-family:var(--f-body); font-style:italic; font-size:12px; fill:#33322e; }
+.r-city-dot   { fill:#33322e; }
+.r-sea        { font-family:var(--f-body); font-style:italic; font-size:13px; fill:#8aa7b6; letter-spacing:.06em; }
+
+.prod-marker{ cursor:pointer; }
+.prod-marker circle{ fill:var(--accent); transition:r var(--t-fast); }
+.prod-marker:hover circle,
+.prod-marker:focus-visible circle{ r:9.5; outline:none; }
+.prod-marker .ring{ fill:none; stroke:var(--accent); stroke-width:1.5; opacity:.45; }
+.prod-marker text{ font-family:var(--f-mono); font-size:11px; letter-spacing:.08em; fill:var(--ink); text-transform:uppercase; }
+
+
+.region-list{ display:flex; flex-direction:column; gap:2px; }
+.region-list h2{ font-size:14px; font-family:var(--f-mono); letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:14px; font-weight:400; font-stretch:normal; }
+.prod-card{
+  text-align:left; background:none; border:none;
+  border-top:1px solid var(--line);
+  padding:18px 4px; display:flex; gap:16px; align-items:baseline;
+  transition:padding var(--t-fast), background var(--t-fast);
+}
+.prod-card:last-child{ border-bottom:1px solid var(--line); }
+.prod-card:hover{ background:var(--paper-2); padding-inline:14px; }
+.prod-card .n{ font-family:var(--f-display); font-stretch:expanded; font-weight:600; font-size:20px; }
+.prod-card:hover .n{ color:var(--accent); }
+.prod-card .s{ font-family:var(--f-mono); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin-left:auto; white-space:nowrap; }
+
+/* ---- producer page ------------------------------------------------ */
+.producer{ padding-block:24px 72px; }
+.p-top{ border-bottom:1px solid var(--line); padding-bottom:22px; margin-bottom:0; }
+.p-place{ font-family:var(--f-mono); text-transform:uppercase; letter-spacing:.18em; font-size:.7rem; color:var(--accent); }
+.p-top h1{ font-size:clamp(32px,6.5vw,68px); margin:12px 0 12px; }
+.p-lede{ font-size:clamp(18px,2.4vw,23px); max-width:60ch; color:var(--ink-soft); line-height:1.4; }
+.p-founded{ font-family:var(--f-mono); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin-top:16px; }
+
+.tabs{ display:flex; gap:0; flex-wrap:wrap; margin:26px 0 30px; border-bottom:1px solid var(--line); }
+.tab{
+  background:none; border:none; padding:14px 0; margin-right:30px;
+  font-family:var(--f-mono); text-transform:uppercase; letter-spacing:.14em;
+  font-size:.74rem; color:var(--ink-soft);
+  position:relative; top:1px;
+  border-bottom:2px solid transparent; cursor:pointer;
+}
+.tab[aria-selected="true"]{ color:var(--ink); border-bottom-color:var(--accent); }
+.tab:hover{ color:var(--ink); }
+
+.tabpane{ animation:fade var(--t-fast) both; }
+
+/* producer prose */
+.prose{ max-width:68ch; }
+.prose p{ margin:0 0 1.1em; }
+.prose p:first-child{ font-size:1.05em; }
+
+/* winemaker */
+.wm-head{ margin-bottom:22px; }
+.wm-name{ font-family:var(--f-display); font-size:1.5rem; letter-spacing:.01em; }
+.wm-title{ font-family:var(--f-mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-top:6px; }
+
+/* critics */
+.crit-list{ display:flex; flex-direction:column; gap:0; max-width:74ch; }
+.crit{ padding:20px 0; border-top:1px solid var(--line); }
+.crit:first-child{ border-top:none; padding-top:4px; }
+.crit-head{ display:flex; align-items:baseline; gap:14px; }
+.crit-who{ font-family:var(--f-mono); font-size:.72rem; letter-spacing:.13em; text-transform:uppercase; color:var(--ink); }
+.crit-score{
+  font-family:var(--f-mono); font-size:.72rem; font-weight:700; letter-spacing:.04em;
+  color:var(--accent); border:1px solid var(--accent); border-radius:2px; padding:1px 7px;
+}
+.crit-context{ display:block; font-family:var(--f-body); font-style:italic; font-size:.85rem; color:var(--ink-soft); margin:4px 0 2px; }
+.crit-note{ margin:8px 0 0; max-width:70ch; }
+.crit-src{ font-family:var(--f-mono); font-size:.58rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap; text-decoration:none; border-bottom:1px solid var(--line); }
+.crit-src:hover{ color:var(--accent); border-color:var(--accent); }
+.crit-coverage{ margin-top:24px; padding:14px 16px; background:var(--paper-2); border-left:2px solid var(--line); font-size:.92rem; color:var(--ink-soft); max-width:74ch; }
+.crit-foot{ margin-top:14px; font-family:var(--f-mono); font-size:.58rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); max-width:74ch; }
+
+
+.refs{ margin-top:34px; border-top:1px solid var(--line); padding-top:22px; }
+.refs h3{ font-family:var(--f-mono); font-stretch:normal; font-weight:400; font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:14px; }
+.refs ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.refs a{ text-decoration:none; display:inline-flex; gap:10px; align-items:baseline; }
+.refs a .lbl{ border-bottom:1px solid var(--ink); padding-bottom:1px; }
+.refs a:hover .lbl{ color:var(--accent); border-color:var(--accent); }
+.refs a .src{ font-family:var(--f-mono); font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); }
+
+/* wines */
+.wine{ display:grid; grid-template-columns:300px 1fr; gap:48px; align-items:start; }
+.wine + .wine{ margin-top:56px; border-top:1px solid var(--line); padding-top:48px; }
+.wine-visual{ position:sticky; top:24px; }
+.wine-visual svg{ width:100%; max-width:240px; height:auto; display:block; margin:0 auto; filter:drop-shadow(0 18px 24px rgba(0,0,0,.14)); }
+.wine-meta{ min-width:0; }
+.wine-meta h2{ font-size:clamp(24px,3.4vw,34px); line-height:1.04; }
+.wine-vint{ font-family:var(--f-mono); letter-spacing:.16em; text-transform:uppercase; font-size:.72rem; color:var(--accent); margin:10px 0 2px; }
+.wine-app{ font-family:var(--f-mono); letter-spacing:.1em; text-transform:uppercase; font-size:.64rem; color:var(--ink-soft); }
+
+.spec{ margin-top:24px; display:grid; gap:0; }
+.spec-row{ display:grid; grid-template-columns:160px 1fr; gap:18px; padding:14px 0; border-top:1px solid var(--line); }
+.spec-row:last-child{ border-bottom:1px solid var(--line); }
+.spec-row dt{ font-family:var(--f-mono); font-size:.64rem; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-soft); padding-top:3px; }
+.spec-row dd{ margin:0; }
+
+.note-flag{
+  margin-top:22px; padding:16px 18px;
+  background:var(--paper-2); border-left:3px solid var(--accent);
+  font-size:15px; color:var(--ink-soft); border-radius:2px;
+}
+
+/* ---- footer ------------------------------------------------------- */
+.foot{
+  margin-top:auto; border-top:1px solid var(--line);
+  padding-block:26px 40px;
+  display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  font-family:var(--f-mono); font-size:.62rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-soft);
+}
+.foot a{ color:var(--ink-soft); text-decoration:none; }
+.foot a:hover{ color:var(--accent); }
+
+/* ---- responsive --------------------------------------------------- */
+@media (max-width:900px){
+  .region-grid{ grid-template-columns:1fr; gap:24px; }
+  .wine{ grid-template-columns:1fr; gap:24px; }
+  .wine-visual{ position:static; max-width:200px; margin:0 auto; }
+}
+@media (max-width:560px){
+  body{ font-size:17px; }
+  .spec-row{ grid-template-columns:1fr; gap:4px; }
+  .tab{ margin-right:22px; }
+  .masthead{ padding-block:16px 12px; }
+}
+
+/* ---- focus + motion ---------------------------------------------- */
+:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+.region.active:focus-visible{ outline:2px solid var(--accent); outline-offset:0; }
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="gate" id="gate" hidden>
+    <div class="gate-card">
+      <div class="gate-kicker">Trade Portfolio · Access</div>
+      <h1>Italian Wines</h1>
+      <p>This catalogue is intended for wine professionals. Please enter the access password to continue.</p>
+      <div class="gate-row">
+        <input id="gate-input" type="password" autocomplete="off" placeholder="Password" aria-label="Access password">
+        <button id="gate-btn" type="button">Enter</button>
+      </div>
+      <div class="gate-err" id="gate-err" aria-live="polite"></div>
+      <div class="gate-note">Demo password: <strong>barolo</strong> — change it in the app.js section of this file. Note this is a presentation gate, not real security (see README).</div>
+    </div>
+  </div>
+
+  <div id="app" hidden>
+    <header class="wrap masthead">
+      <div><div class="brand">Italian Wine <b>Portfolio</b></div></div>
+      <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+    </header>
+    <main id="view" class="wrap" role="main"></main>
+    <footer class="wrap foot">
+      <span>Italian Wine Portfolio — for the trade</span>
+      <span>Maps &amp; bottles drawn from data · sources cited per producer</span>
+    </footer>
+  </div>
+
+<script>
+/* ------------------------------------------------------------------ *
+ *  geo.js — all map geometry
+ *  - ITALY_REGIONS: low-poly polygons for the national map (viewBox 760x940)
+ *  - REGION_MAPS:   contiguous "mesh" maps for each region (viewBox 600x460)
+ *
+ *  Each region map is a partition of a shared grid into labelled cells.
+ *  Adjacent cells share grid vertices, so the areas tile together with no
+ *  gaps; borders between different appellations/communes are drawn from the
+ *  cell codes. Coordinates are a faithful schematic of the real arrangement
+ *  of the zones, not survey-accurate boundary data.
+ * ------------------------------------------------------------------ */
+
+const ITALY_VIEWBOX = "0 0 760 940";
+
+const ITALY_REGIONS = [
+  { id:'val-daosta',  name:"Valle d'Aosta",        active:false, points:"120,150 165,120 205,150 178,182 132,180" },
+  { id:'piemonte',    name:"Piemonte",             active:true,  points:"132,180 178,182 205,150 252,168 290,250 292,322 250,358 198,348 165,300 150,240" },
+  { id:'lombardia',   name:"Lombardia",            active:false, points:"252,168 332,118 412,130 432,205 405,258 330,266 290,250" },
+  { id:'trentino',    name:"Trentino-Alto Adige",  active:false, points:"388,96 446,80 474,122 458,176 412,168 396,130" },
+  { id:'veneto',      name:"Veneto",               active:false, points:"412,168 458,176 548,182 562,238 482,258 432,205" },
+  { id:'friuli',      name:"Friuli-Venezia Giulia",active:true,  points:"548,182 602,166 636,202 614,252 562,238" },
+  { id:'liguria',     name:"Liguria",              active:false, points:"165,300 198,348 250,358 305,352 332,362 300,388 230,374 180,346" },
+  { id:'emilia',      name:"Emilia-Romagna",       active:false, points:"290,250 330,266 405,258 432,205 482,258 548,302 500,356 432,362 360,356 332,362 305,352 300,322" },
+  { id:'toscana',     name:"Toscana",              active:true,  points:"305,352 360,356 432,362 442,422 402,472 350,472 320,442 300,392" },
+  { id:'umbria',      name:"Umbria",               active:false, points:"442,362 500,356 492,392 502,422 472,472 442,472 432,422" },
+  { id:'marche',      name:"Marche",               active:true,  points:"500,356 548,302 578,362 562,432 522,456 502,422 492,392" },
+  { id:'lazio',       name:"Lazio",                active:false, points:"350,472 402,472 442,472 472,472 462,532 412,588 362,562 336,512" },
+  { id:'abruzzo',     name:"Abruzzo",              active:true,  points:"502,422 522,456 562,432 582,472 562,522 512,522 492,482" },
+  { id:'molise',      name:"Molise",               active:false, points:"512,522 562,522 592,542 576,582 526,566 506,546" },
+  { id:'campania',    name:"Campania",             active:false, points:"412,588 462,532 512,546 526,566 520,612 470,652 430,632" },
+  { id:'puglia',      name:"Puglia",               active:false, points:"576,502 606,500 662,546 702,622 660,668 606,642 576,582 592,542" },
+  { id:'basilicata',  name:"Basilicata",           active:false, points:"520,566 576,582 606,642 576,676 530,666 515,612" },
+  { id:'calabria',    name:"Calabria",             active:false, points:"530,668 574,678 600,694 582,742 548,800 520,812 536,748 540,710" },
+  { id:'sicilia',     name:"Sicilia",              active:true,  points:"448,860 578,846 620,896 538,918 458,908" },
+  { id:'sardegna',    name:"Sardegna",             active:false, points:"175,615 252,600 272,692 236,776 180,766 160,690" },
+];
+
+/* Pantelleria is a producer location (shown inside the Sicilia map),
+   not a region, so nothing extra is drawn on the national map. */
+const ITALY_ISLANDS = [];
+
+/* ------------------------------------------------------------------ *
+ *  Regional mesh maps. viewBox 0 0 600 460.
+ *  grid     : shared lattice — x[] column edges, y[] row edges
+ *  cells    : rows of single-char codes ('.' = water / outside)
+ *  legend   : code -> { name, group }
+ *  groups   : group -> { tint, appellation }   (appellation:null = no big label)
+ *  cities   : orientation dots { name, x, y }
+ *  producers: { id, name, zone, sub }  (marker placed at the zone centroid)
+ * ------------------------------------------------------------------ */
+const GRID_X = [60,120,180,240,300,360,420,480,540];
+const GRID_Y = [55,113,171,229,287,345,403];
+
+const REGION_MAPS = {
+  piemonte: {
+    title: "Piemonte",
+    subtitle: "Langhe & Monferrato",
+    sea: null,
+    neighbours: [ {name:"Lombardia",x:518,y:90}, {name:"Liguria",x:250,y:446} ],
+    grid: { x:GRID_X, y:GRID_Y },
+    cells: [
+      ".MMKMMM.",
+      "MMRRRbb.",
+      ".RRRRbn.",
+      ".LLOCtn.",
+      ".LOOCS..",
+      "..OFSS..",
+    ],
+    legend: {
+      M:{ name:"Monferrato",            group:"monferrato" },
+      K:{ name:"Canelli",               group:"monferrato" },
+      R:{ name:"Roero · Alba",          group:"alba" },
+      b:{ name:"Barbaresco",            group:"barbaresco" },
+      n:{ name:"Neive",                 group:"barbaresco" },
+      t:{ name:"Treiso",                group:"barbaresco" },
+      L:{ name:"La Morra",              group:"barolo" },
+      O:{ name:"Barolo",                group:"barolo" },
+      C:{ name:"Castiglione Falletto",  group:"barolo" },
+      S:{ name:"Serralunga d'Alba",     group:"barolo" },
+      F:{ name:"Monforte d'Alba",       group:"barolo" },
+    },
+    groups: {
+      monferrato:{ tint:"#ece6d6", appellation:"Monferrato" },
+      alba:      { tint:"#f1ece0", appellation:null },
+      barbaresco:{ tint:"#e7ddca", appellation:"Barbaresco" },
+      barolo:    { tint:"#e1d7c0", appellation:"Barolo" },
+    },
+    cities: [
+      { name:"Alba",  x:318, y:206 },
+      { name:"Asti",  x:150, y:150 },
+    ],
+    producers: [
+      { id:'contratto',  name:"Contratto",  zone:"K", sub:"Canelli" },
+      { id:'ceretto',    name:"Ceretto",    zone:"n", sub:"Gallina · Neive" },
+      { id:'fortemasso', name:"Fortemasso", zone:"F", sub:"Castelletto · Monforte" },
+    ],
+  },
+
+  toscana: {
+    title: "Toscana",
+    subtitle: "Bolgheri & Chianti Classico",
+    sea: { label:"Mar Tirreno", side:'left' },
+    neighbours: [ {name:"Emilia-Romagna",x:300,y:30}, {name:"Umbria",x:566,y:300}, {name:"Lazio",x:444,y:446} ],
+    grid: { x:GRID_X, y:GRID_Y },
+    cells: [
+      ".HHHPP..",
+      ".BHHPG..",
+      ".BHHGED.",
+      ".BHHEEJ.",
+      ".HHHEJJ.",
+      "..HHE...",
+    ],
+    legend: {
+      B:{ name:"Bolgheri",              group:"bolgheri" },
+      H:{ name:"Colline", group:"colline", hideLabel:true },
+      P:{ name:"Barberino Tavarnelle",  group:"chianti" },
+      G:{ name:"Greve",                 group:"chianti" },
+      E:{ name:"Castellina",            group:"chianti" },
+      D:{ name:"Radda",                 group:"chianti" },
+      J:{ name:"Gaiole",                group:"chianti" },
+    },
+    groups: {
+      bolgheri:{ tint:"#e3e6df", appellation:"Bolgheri" },
+      colline: { tint:"#f1ece0", appellation:null },
+      chianti: { tint:"#e8dfcc", appellation:"Chianti Classico" },
+    },
+    cities: [
+      { name:"Firenze", x:372, y:78 },
+      { name:"Siena",   x:318, y:330 },
+    ],
+    producers: [
+      { id:'argentiera', name:"Tenuta Argentiera",    zone:"B", sub:"" },
+      { id:'monsanto',   name:"Castello di Monsanto",  zone:"P", sub:"Barberino" },
+    ],
+  },
+
+  marche: {
+    title: "Marche",
+    subtitle: "Verdicchio dei Castelli di Jesi",
+    sea: { label:"Mar Adriatico", side:'right' },
+    neighbours: [ {name:"Emilia-Romagna",x:170,y:30}, {name:"Umbria",x:70,y:300}, {name:"Abruzzo",x:250,y:452} ],
+    grid: { x:GRID_X, y:GRID_Y },
+    cells: [
+      ".HHcmO..",
+      "HHcmmO..",
+      ".HumsO..",
+      ".TuusH..",
+      ".TTuHH..",
+      "..THH...",
+    ],
+    legend: {
+      c:{ name:"Castelplanio",  group:"castelli" },
+      m:{ name:"Montecarotto",  group:"castelli" },
+      u:{ name:"Cupramontana",  group:"castelli" },
+      s:{ name:"Staffolo",      group:"castelli" },
+      T:{ name:"Matelica",      group:"matelica" },
+      O:{ name:"Costa · Conero",group:"coast", hideLabel:true },
+      H:{ name:"Colline",       group:"colline", hideLabel:true },
+    },
+    groups: {
+      castelli:{ tint:"#e7ddca", appellation:"Castelli di Jesi" },
+      matelica:{ tint:"#e9e1d0", appellation:"Matelica" },
+      coast:   { tint:"#e3e6df", appellation:null },
+      colline: { tint:"#f1ece0", appellation:null },
+    },
+    cities: [
+      { name:"Ancona", x:402, y:142 },
+      { name:"Jesi",   x:300, y:232 },
+    ],
+    producers: [
+      { id:'bucci', name:"Bucci", zone:"m", sub:"Ostra Vetere" },
+    ],
+  },
+
+  abruzzo: {
+    title: "Abruzzo",
+    subtitle: "Trebbiano d'Abruzzo",
+    sea: { label:"Mar Adriatico", side:'right' },
+    neighbours: [ {name:"Marche",x:250,y:30}, {name:"Lazio",x:70,y:120}, {name:"Molise",x:432,y:452} ],
+    grid: { x:GRID_X, y:GRID_Y },
+    cells: [
+      "GGtttO..",
+      "GGGtLO..",
+      "GGGLLO..",
+      "GGhLLO..",
+      ".GhhhO..",
+      "..hhh...",
+    ],
+    legend: {
+      G:{ name:"Gran Sasso",        group:"relief" },
+      t:{ name:"Colline Teramane",  group:"teramane" },
+      L:{ name:"Loreto Aprutino",   group:"pescaresi" },
+      h:{ name:"Colline Teatine",   group:"teatine" },
+      O:{ name:"Costa Adriatica",   group:"coast" },
+    },
+    groups: {
+      relief:   { tint:"#e1e3db", appellation:null },
+      teramane: { tint:"#e8dfcc", appellation:"Colline Teramane" },
+      pescaresi:{ tint:"#e2d8c2", appellation:"Loreto Aprutino" },
+      teatine:  { tint:"#ece5d4", appellation:"Colline Teatine" },
+      coast:    { tint:"#e3e6df", appellation:null },
+    },
+    cities: [
+      { name:"Pescara", x:402, y:142 },
+      { name:"Chieti",  x:258, y:330 },
+      { name:"L'Aquila",x:150, y:200 },
+    ],
+    producers: [
+      { id:'valentini', name:"Valentini", zone:"L", sub:"" },
+    ],
+  },
+
+  friuli: {
+    title: "Friuli-Venezia Giulia",
+    subtitle: "Collio · Ribolla Gialla",
+    sea: { label:"Mar Adriatico", side:'bottom' },
+    neighbours: [ {name:"Veneto",x:80,y:108}, {name:"Austria",x:250,y:28}, {name:"Slovenia",x:506,y:176} ],
+    grid: { x:GRID_X, y:GRID_Y },
+    cells: [
+      ".PEEE...",
+      "PPPECC..",
+      "PPPECC..",
+      "PPPPCC..",
+      ".OOPOO..",
+      "..OOO...",
+    ],
+    legend: {
+      P:{ name:"Grave · Isonzo",     group:"grave" },
+      E:{ name:"Colli Orientali",    group:"orientali" },
+      C:{ name:"Collio",             group:"collio" },
+      O:{ name:"Laguna · Costa",     group:"coast" },
+    },
+    groups: {
+      grave:    { tint:"#ece7da", appellation:"Grave" },
+      orientali:{ tint:"#e8dfcc", appellation:"Colli Orientali" },
+      collio:   { tint:"#e2d8c2", appellation:"Collio" },
+      coast:    { tint:"#e3e6df", appellation:null },
+    },
+    cities: [
+      { name:"Udine",      x:198, y:150 },
+      { name:"Gorizia",    x:330, y:262 },
+    ],
+    producers: [
+      { id:'gravner', name:"Gravner", zone:"C", sub:"Oslavia" },
+    ],
+  },
+
+  sicilia: {
+    title: "Sicilia",
+    subtitle: "Pantelleria · Zibibbo",
+    sea: { label:"Canale di Sicilia", side:'around' },
+    neighbours: [ {name:"Mar Tirreno",x:300,y:34,sea:true}, {name:"Calabria",x:542,y:46} ],
+    grid: { x:GRID_X, y:GRID_Y },
+    cells: [
+      "...WIT..",
+      "..WWIT..",
+      "..WIIT..",
+      ".Z.WI...",
+      "ZZ......",
+      ".Z......",
+    ],
+    legend: {
+      W:{ name:"Marsala · Trapani", group:"sic_w" },
+      I:{ name:"Sicilia",           group:"sic_c" },
+      T:{ name:"Etna",              group:"sic_e" },
+      Z:{ name:"Pantelleria",       group:"pantelleria" },
+    },
+    groups: {
+      sic_w:      { tint:"#e8dfcc", appellation:"Marsala" },
+      sic_c:      { tint:"#eee8db", appellation:"Sicilia" },
+      sic_e:      { tint:"#e3e6df", appellation:"Etna" },
+      pantelleria:{ tint:"#e2d8c2", appellation:"Pantelleria" },
+    },
+    cities: [
+      { name:"Palermo", x:258, y:84 },
+      { name:"Trapani", x:198, y:142 },
+    ],
+    producers: [
+      { id:'pantelleria', name:"Tua Rita", zone:"Z", sub:"Sese" },
+    ],
+  },
+};
+
+if (typeof window !== 'undefined') {
+  window.GEO = { ITALY_VIEWBOX, ITALY_REGIONS, ITALY_ISLANDS, REGION_MAPS };
+}
+
+</script>
+<script>
+/* ------------------------------------------------------------------ *
+ *  data.js — portfolio content
+ *  Prose is original and written to be factual and measured. Producer
+ *  histories and wine notes are informed by the references listed on
+ *  each page (Decanter, Wine Spectator, Berry Bros. & Rudd, Kerin
+ *  O'Keefe, Gambero Rosso, consortium and estate sources).
+ * ------------------------------------------------------------------ */
+
+const PRODUCERS = {
+  contratto: { id:`contratto`, name:`Contratto`, region:`piemonte`, place:`Canelli, Asti`, founded:`1867`, lede:`One of the oldest Metodo Classico houses in Italy, restored under the Rivetti family of La Spinetta.`, history:[`Contratto was founded in Canelli, in the Asti hills, in 1867 by Giuseppe Contratto. It was among the first Italian houses to commit to bottle-fermented sparkling wine, working at first with Moscato from the surrounding Monferrato. Its 1919 bottling is generally cited as the first vintage-dated Italian Metodo Classico, an early decision to express individual harvests rather than a fixed house blend.`, `In the 1920s the house broadened into vermouth and liqueurs, and commissioned poster art from Leonetto Cappiello that is still associated with the name. Beneath the town lie its cellars, cut deep into the tuff and limestone hillside and part of the UNESCO-listed "underground cathedrals" of Canelli.`, `After a long decline, the house was bought by the Bocchino distilling family in 1993, who restored the cellars before selling in 2011 to Giorgio Rivetti of La Spinetta. Rivetti refocused the range on dry, vintage-dated bottlings given long ageing on the lees, and developed estate vineyards in the high Alta Langa DOCG, the cooler upland zone now seen as Piedmont's reference for traditional-method sparkling wine.`, `The house is run today by Giorgio and his son Andrea, and continues to make a small line of vermouth and bitters alongside the sparkling wines.`], winemaker:{ name:`Giorgio Rivetti`, title:`Owner & winemaker · La Spinetta`, bio:[`Giorgio Rivetti directs winemaking at Contratto as part of La Spinetta, the family estate his father Giuseppe founded at Castagnole delle Lanze in 1977. According to La Spinetta's distributors, he began studying at the Scuola Enologica di Alba — one of Italy's oldest wine schools — at sixteen, and served apprenticeships in Burgundy and Bordeaux before returning to Piedmont.`, `He led the family into red wine with a Barbera d'Asti in 1985, and by 2000 La Spinetta was bottling a range of single-vineyard Piedmont wines; the family later expanded into Tuscany. A longstanding admirer of Champagne, Rivetti had in fact been making Contratto's sparkling wines since 2007, several years before the 2011 purchase, and after acquiring the house moved it to estate-grown fruit and longer lees-ageing.`, `He works alongside his son Andrea. Robert Parker once described him as displaying "a masterful touch" across Barbera, Moscato d'Asti and his red wines, and Wine Spectator has called him one of the leading forces in Piedmont.`] }, critics:[{ who:`Wine Spectator`, note:`Profiling Rivetti, the magazine cast him as a winemaker-proprietor who became "one of the leading forces in Piedmont," praising the precision and approachability of his wines.`, url:`https://www.skurnik.com/producer/la-spinetta-piedmont/` }, { who:`Robert Parker · The Wine Advocate`, note:`Parker credited Rivetti with "a masterful touch" across the family's Piedmont range — a reputation that carries into the Contratto sparkling wines he now oversees.`, url:`https://boundbywine.com/blogs/vineyard-spotlight/la-spinetta` }], criticsNote:`This particular cuvée — a 2009 magnum — has little published vintage-specific criticism. Contratto's current Alta Langa bottlings are reviewed by Vinous and The Wine Advocate; the notes above reflect the standing of the house and its winemaker rather than this exact bottle.`, references:[{ label:`Producer profile`, source:`Skurnik`, url:`https://www.skurnik.com/producer/contratto/` }, { label:`History`, source:`Contratto`, url:`https://www.contratto.it/en/history/` }, { label:`Giorgio Rivetti & La Spinetta`, source:`Cellarhand`, url:`https://cellarhand.com.au/producers/la-spinetta/` }], wines:[`contratto-pasdose`] },
+
+  ceretto: { id:`ceretto`, name:`Ceretto`, region:`piemonte`, place:`Alba`, founded:`1937`, lede:`An Alba house that helped pioneer single-vineyard Barolo and Barbaresco, now farmed organically and biodynamically.`, history:[`Ceretto was established by Riccardo Ceretto in the 1930s. In the 1960s his sons Bruno and Marcello, influenced by Burgundy, began identifying and bottling individual crus of Barolo and Barbaresco — an unusual idea in Piedmont at the time. They purchased the family's first estate cru, Bricco Asili in Barbaresco, in 1968, and built a group of small estates around the best sites, including Bricco Rocche in Barolo.`, `Vinous credits the brothers — Marcello a gifted winemaker, Bruno a tireless traveller and promoter — as among the first Langhe houses to gain a worldwide following in the 1970s and early 1980s, when Barolo and Barbaresco were still little known abroad.`, `The third generation — Lisa, Roberta, Alessandro and Federico — joined from 1999. The family farms about 25 hectares across the Barolo and Barbaresco DOCGs (some 160 hectares in total across the Langhe and Roero), and runs other ventures including the three-Michelin-star Piazza Duomo in Alba.`, `Volume has fallen by roughly half this century through stricter selection. The estate's vines have been certified organic since the 2015 vintage, with biodynamic practice in the vineyards that the family chooses not to certify.`], winemaker:{ name:`Alessandro Ceretto`, title:`Head winemaker`, bio:[`Alessandro Ceretto, born in 1976, is the grandson of founder Riccardo and son of Marcello. He joined the family business in 1999 after studying oenology and gaining cellar experience abroad, and has been head winemaker since the early 2000s, overseeing the family's Langhe estates.`, `In 2009 he brought in the consultant Adriano Zago to convert the Nebbiolo vineyards to biodynamic farming, beginning with the best plots; satisfied with the results, he extended organic practice across the whole estate, which was certified organic from 2015. The family has also worked with the soil specialists Claude and Lydia Bourguignon.`, `In the cellar the shift has been toward longer macerations, native-yeast fermentations and large old casks rather than new oak. Alessandro has described his biodynamic Barolo as being "like my child," and frames his aim as building a high-level technical team in pursuit of terroir expression. The tiny Gallina holding in Neive, acquired in the mid-2010s, is among the newest of the family's single-vineyard sites.`] }, critics:[{ who:`Decanter`, note:`A producer profile tasting 19 wines traced the estate's move to organic and biodynamic farming and a lighter, more transparent style under the third generation.`, url:`https://www.decanter.com/premium/ceretto-producer-profile-19-wines-tasted-496193/` }, { who:`Antonio Galloni · Vinous`, note:`Vinous has tracked Ceretto's crus over long retrospectives, noting the change in winemaking from the mid-1990s toward gentler extraction and fresher, more site-driven Barbaresco and Barolo.`, url:`https://v1.vinous.com/articles/ceretto-barbaresco-asili-1974-2014-dec-2018` }], criticsNote:`Barbaresco Gallina is a very small, recent bottling (around 0.3 ha), so vintage-specific published scores are limited; the notes above reflect critics' view of the estate and its crus.`, references:[{ label:`Producer profile, 19 wines tasted`, source:`Decanter`, url:`https://www.decanter.com/premium/ceretto-producer-profile-19-wines-tasted-496193/` }, { label:`Barbaresco Asili 1974–2014 retrospective`, source:`Vinous`, url:`https://v1.vinous.com/articles/ceretto-barbaresco-asili-1974-2014-dec-2018` }, { label:`Barolo dinner & estate visit`, source:`World of Fine Wine`, url:`https://worldoffinewine.com/wine-food/ceretto-barolo-dinner-terroir-art-truffle-hunting` }], wines:[`ceretto-gallina`] },
+
+  fortemasso: { id:`fortemasso`, name:`Fortemasso`, region:`piemonte`, place:`Monforte d'Alba`, founded:`2013`, lede:`A young Monforte estate working a single corner of the Castelletto cru in a contemporary, restrained style.`, history:[`Fortemasso was founded in 2013, when the Gussalli Beretta family — of the historic Brescia firearms house — acquired a property at Castelletto, in the commune of Monforte d'Alba in the Barolo DOCG. The name comes from the large boulder ("masso") on the highest point of the hill. The Nebbiolo holdings for Barolo are modest, around five hectares, with further plots for Langhe Nebbiolo, Barbera and Dolcetto.`, `The estate sits in the Castelletto subzone, a Menzione Geografica Aggiuntiva formally delimited within Barolo in 2010. The vineyards lie on Diano sandstone — sandy, silty soils with some marl — at roughly 360 to 450 metres, in a cool, well-ventilated pocket of the appellation.`, `Fortemasso is one of several estates in the Agricole Gussalli Beretta wine group, alongside Lo Sparviere in Franciacorta, Castello di Radda in Chianti Classico, Orlandi Contucci Ponno in the Colline Teramane, and properties in Alto Adige and Bolgheri. The approach is deliberately low-intervention, the stated aim a contemporary Barolo that keeps the variety's structure while emphasising freshness and perfume.`, `Winemaking and ageing take place in a purpose-built underground, energy-conscious cellar designed to preserve the landscape above. Decanter has described the estate as expressing "the contemporary soul of Barolo."`], winemaker:{ name:`A dedicated technical team`, title:`Agricole Gussalli Beretta group`, bio:[`Fortemasso does not present its work through a single celebrity winemaker. The estate describes itself as run by a young, dedicated technical team within the Agricole Gussalli Beretta group, which oversees several Italian wineries and emphasises vineyard work with limited cellar intervention.`, `Vinification follows a consistent template: fermentation in stainless steel with daily pump-overs and a submerged cap, total maceration of around 25 to 30 days, then roughly 30 months of ageing in wood for the Castelletto, followed by further time in bottle before release. The group has stated it prefers to let the Castelletto site, rather than an individual signature, define the wine.`] }, critics:[{ who:`Decanter`, note:`Decanter has profiled Fortemasso as part of a new generation reading the Castelletto subzone, framing its wines as "elegant, flavourful and surprisingly fresh," and has reviewed the Castelletto and Castelletto Riserva bottlings.`, url:`https://www.decanter.com/sponsored/fortemasso-the-contemporary-soul-of-barolo-568582/` }], criticsNote:`Fortemasso is a young estate (first vintages from the mid-2010s); independent critic coverage is still thin and vintage-specific scores for this bottling are limited.`, references:[{ label:`The contemporary soul of Barolo`, source:`Decanter`, url:`https://www.decanter.com/sponsored/fortemasso-the-contemporary-soul-of-barolo-568582/` }, { label:`Estate & the group`, source:`Fortemasso`, url:`https://www.fortemasso.it/en/the-group/` }], wines:[`fortemasso-castelletto`] },
+
+  argentiera: { id:`argentiera`, name:`Tenuta Argentiera`, region:`toscana`, place:`Bolgheri`, founded:`1999`, lede:`The highest and most coastal estate in Bolgheri, making Bordeaux-variety reds with a cooler, fresher accent.`, history:[`Tenuta Argentiera was founded in 1999, with the first vines planted in 2000, in the southern part of the Bolgheri DOC. It sits on a plateau about 200 metres above the sea and a little over a mile from the Tyrrhenian coast — both the highest and one of the most maritime sites in the appellation. The name recalls the silver mines (argento) once worked in the hills.`, `Of roughly 500 hectares of estate land, about 80 are under vine, framed by coastal forest and Mediterranean scrub that help temper the climate and limit disease pressure. The soils are varied — sand in the lower sections, with limestone and clay unusually close to the coast — and harvest tends to run later than much of Bolgheri, the estate aiming for ripeness without heaviness.`, `The estate works Bordeaux varieties — Cabernet Sauvignon, Merlot, Cabernet Franc and, for other labels, Syrah — with gentle, gravity-assisted handling and extended macerations. Its flagship Argentiera Bolgheri Superiore has, across the past decade, drawn some of the highest scores in the appellation from international critics.`], winemaker:{ name:`Nicolò Carrara`, title:`Winemaker & managing director`, bio:[`Nicolò Carrara has been Argentiera's winemaker and managing director since 2009. He emphasises the estate's combination of altitude, sea breezes and surrounding forest, and the unusual presence of limestone and clay so near the coast, as the keys to a fresher, more structured style of Bolgheri.`, `Leonardo Raspini, who arrived in 2001, planted the first vineyard blocks; Carrara has since refined the work with a light hand in vineyard and cellar — careful canopy and harvest timing, a gradual conversion of training systems to increase freshness, and ageing in French oak. Merlot plays a central role in the Superiore blend, supported by Cabernet Sauvignon and Cabernet Franc.`] }, critics:[{ who:`James Suckling`, score:`96`, context:`2020 Bolgheri Superiore`, note:`Suckling described a rich, full-bodied wine of currant and plum with chocolate and walnut tones and layered tannins, suggesting several years' cellaring.`, url:`https://www.wineexpress.com/tenuta-argentiera-2020-bolgheri-superiore` }, { who:`Monica Larner · The Wine Advocate`, score:`94`, context:`2020 Bolgheri Superiore`, note:`Larner read the 2020 as a careful, proud hot-vintage expression — intense fruit up front, a touch shorter than the very best recent years — worth additional time in bottle.`, url:`https://www.wineexpress.com/tenuta-argentiera-2020-bolgheri-superiore` }, { who:`Decanter`, score:`94`, context:`2020 Bolgheri Superiore`, note:`Decanter noted a regular, dry growing season and a balanced, classically styled wine.`, url:`https://www.wineexpress.com/tenuta-argentiera-2020-bolgheri-superiore` }, { who:`James Suckling`, score:`99`, context:`2015 Bolgheri Superiore`, note:`On an earlier vintage, Suckling judged the wine the estate's best to date and placed Argentiera, in his words, "with the best of the best in Tuscany."`, url:`https://winespies.com/sales/9398-tenuta-argentiera-2015-argentiera-bolgheri-superiore` }], references:[{ label:`2020 Bolgheri Superiore — critic scores`, source:`Wine Express`, url:`https://www.wineexpress.com/tenuta-argentiera-2020-bolgheri-superiore` }, { label:`Winemaker Nicolò Carrara — estate profile`, source:`The Wine Chef`, url:`https://www.thewinechef.com/blog/a-bolgheri-beauty-between-the-sea-and-the-sky-tenuta-argentiera` }, { label:`Estate`, source:`Tenuta Argentiera`, url:`https://www.argentiera.it/en/` }], wines:[`argentiera-superiore`] },
+
+  monsanto: { id:`monsanto`, name:`Castello di Monsanto`, region:`toscana`, place:`Barberino Tavarnelle`, founded:`1962`, lede:`The estate that bottled the first single-vineyard Chianti Classico, still family-run.`, history:[`Castello di Monsanto was established in 1962 by Fabrizio Bianchi in the hills of Barberino Val d'Elsa (now Barberino Tavarnelle), in the north-western corner of Chianti Classico. That same year he bottled Il Poggio as a single-vineyard wine — generally recognised as the first single-vineyard ("cru") Chianti Classico, and a model that helped shape the later Gran Selezione category.`, `Bianchi was an early reformer: in 1968 he removed white grapes from his Chianti Classico, well before the rules allowed it. The Il Poggio vineyard became the massal-selection source for the estate's Sangiovese, Canaiolo and Colorino, and a long underground cellar holds one of Tuscany's deepest libraries of older vintages.`, `The estate remains family-owned and is now led by the third generation. Il Poggio is fermented in stainless steel and aged in large oak botti, in a style built for long cellaring rather than early impact.`], winemaker:{ name:`Laura Bianchi`, title:`Proprietor & winemaker`, bio:[`Laura Bianchi, daughter of founder Fabrizio, took over the running of Castello di Monsanto and is one of Chianti Classico's established women winemakers. She has overseen continuity of the estate's house style — Sangiovese-led wines, ageing in Slavonian oak, and a deep reserve of older vintages — while carrying the Il Poggio cru into the Gran Selezione era.`, `She has spoken about Il Poggio's 1962 debut as the first vineyard-named Chianti Classico and its influence on the creation of the Gran Selezione designation in 2014. Her father Fabrizio remains a presence; the family frames its work as combining tradition with steady, incremental improvement.`] }, critics:[{ who:`James Suckling`, score:`96`, context:`2018 Il Poggio Gran Selezione`, note:`Suckling found lavender, sage, lemon blossom and cherry, with firm, fine tannins giving "crunchiness" — already impressive but built to age.`, url:`https://www.wineexpress.com/monsanto-2018-chianti-classico-riserva-il-poggio-gran-selezione` }, { who:`Antonio Galloni · Vinous`, score:`94`, context:`2018 Il Poggio Gran Selezione`, note:`Galloni described compelling aromatics — dried herbs, cedar, tobacco, scorched earth — but slightly less textural breadth than the very best years, suggesting a few years' patience (drink to ~2048).`, url:`https://whwc.com/monsanto-chianti-classico-gran-selezione-il-poggio-2018/` }, { who:`Monica Larner · The Wine Advocate`, score:`94`, context:`2018 Il Poggio Gran Selezione`, note:`Larner called it pure, precise and complex despite the warm 2018 summer — "a simply outstanding bottle of Chianti in the making," with a long window ahead.`, url:`https://whwc.com/monsanto-chianti-classico-gran-selezione-il-poggio-2018/` }, { who:`Jeb Dunnuck`, score:`95`, context:`2018 Il Poggio Gran Selezione`, note:`Dunnuck noted a perfumed, expressive wine of candied rose, wild raspberry and sweet herbs with real energy, for cellaring through the late 2030s.`, url:`https://www.wineexpress.com/monsanto-2018-chianti-classico-riserva-il-poggio-gran-selezione` }, { who:`Antonio Galloni · Vinous`, score:`98`, context:`2020 Il Poggio (estate context)`, note:`For a later vintage, Galloni called the 2020 "one of the finest Il Poggios ever made," and Vinous named it its #1 Wine of 2025 — a measure of the cru's current standing.`, url:`https://www.bbr.com/producer-5303-castello-monsanto` }], references:[{ label:`Il Poggio 2018 — Galloni & Larner notes`, source:`Woodland Hills Wine Co.`, url:`https://whwc.com/monsanto-chianti-classico-gran-selezione-il-poggio-2018/` }, { label:`Il Poggio 2018 — Suckling & Dunnuck`, source:`Wine Express`, url:`https://www.wineexpress.com/monsanto-2018-chianti-classico-riserva-il-poggio-gran-selezione` }, { label:`Laura Bianchi on Chianti Classico`, source:`VinConnect (podcast)`, url:`https://vinconnect.com/podcast-episode-3-the-evolution-of-chianti-classico-featuring-laura-bianchi-proprietor-of-castello-di-monsanto/` }], wines:[`monsanto-ilpoggio`] },
+
+  bucci: { id:`bucci`, name:`Bucci`, region:`marche`, place:`Ostra Vetere`, founded:`1983`, lede:`A reference estate for age-worthy Verdicchio, built by Ampelio Bucci with enologist Giorgio Grai.`, history:[`The Bucci family has farmed the Castelli di Jesi hills since the 1700s, with origins at Montecarotto. Ampelio Bucci — a Bocconi graduate who worked in fashion and design and taught marketing — planted dedicated Verdicchio in 1971 at Ostra Vetere and, from the early 1980s, set out to make a serious, age-worthy wine at a time when the grape was tied to cheap, high-volume bottlings.`, `From 1983 he worked with the outspoken Alto Adige enologist Giorgio Grai, treating a white wine with the patience usually reserved for reds: very low yields, old vines, each parcel vinified separately, and ageing in large old oak. The estate has been certified organic since 2002. Much of its land is given to olives and grain; the wines are made in an underground cellar cool enough to need no refrigeration.`, `Giorgio Grai died in 2019; the winemaking passed to Gianni Gaspari, with long-time collaborator Gabriele Tanfani also central to the estate. In July 2024 Ampelio Bucci sold the winery to the Veronesi family (Oniwines, of the Oniverse group), with the existing team retained. Ampelio Bucci died in August 2025, aged 89, remembered as a pioneer of quality Italian white wine.`], winemaker:{ name:`Ampelio Bucci & Giorgio Grai`, title:`Founder and enologist (1983–2019); now Gianni Gaspari`, bio:[`The Villa Bucci Riserva is the product of a long partnership. Ampelio Bucci provided the vision and the vineyards; Giorgio Grai, whom Bucci engaged in 1983, provided the winemaking. Bucci has recalled that Grai's first verdict on his wines was blunt — that it would be hard to make anything worse — but that Grai saw the potential of late-ripening Verdicchio on the estate's calcareous soils.`, `Their method was to halve the yields the appellation allowed, restore old vines rather than replant, ferment and age each vineyard separately, and use large old casks so the wine gained complexity rather than oak flavour. The Riserva is bottled only in suitable years and built to age for a decade or more.`, `After Grai's death in 2019 the cellar passed to Gianni Gaspari, and the 2024 sale to the Veronesi family kept the team in place — continuity the estate has stressed as essential to the wine's identity.`] }, critics:[{ who:`Kerin O'Keefe`, note:`A long-standing champion of the wine, O'Keefe has written about Villa Bucci Riserva as "extraordinary wine from an ordinary grape," tracing how Bucci proved Verdicchio's capacity to age.`, url:`https://www.kerinokeefe.com/villa-bucci-riserva/` }, { who:`Ian D'Agata`, note:`On Ampelio Bucci's death, D'Agata wrote that the Riserva was regarded by most experts as one of Italy's roughly fifteen best white wines, and credited Bucci with showing Verdicchio's quality and longevity.`, url:`https://iandagatawine.com/2025/08/22/italian-wine-great-ampelio-bucci-passes-away/` }, { who:`Daniele Cernilli · DoctorWine`, note:`DoctorWine has called the Riserva "a true masterpiece" and named it White Wine of the Year in its 2017 guide.`, url:`https://www.doctorwine.wine/portfolio/villa-bucci/?lang=en` }], criticsNote:`Vintage-specific scores for the 2008 are limited online; the assessments above reflect the long-running critical standing of the Villa Bucci Riserva.`, references:[{ label:`Villa Bucci Riserva — Kerin O’Keefe`, source:`kerinokeefe.com`, url:`https://www.kerinokeefe.com/villa-bucci-riserva/` }, { label:`Ampelio Bucci remembered`, source:`Ian D'Agata`, url:`https://iandagatawine.com/2025/08/22/italian-wine-great-ampelio-bucci-passes-away/` }, { label:`Estate`, source:`Villa Bucci`, url:`https://www.villabucci.com/en/` }], wines:[`bucci-riserva`] },
+
+  valentini: { id:`valentini`, name:`Valentini`, region:`abruzzo`, place:`Loreto Aprutino`, founded:`1650`, lede:`A private, uncompromising Abruzzo estate whose Trebbiano is one of Italy’s benchmark whites.`, history:[`Valentini is one of Italy's most singular and private estates, at Loreto Aprutino in the province of Pescara, on the slopes between the Gran Sasso massif and the Adriatic. The family, of Spanish origin, has held land here since the seventeenth century, and farms old vines trained in the local tendone (pergola) system, the canopy shading the fruit from the Abruzzo sun.`, `Edoardo Valentini, who made the wines from the 1950s until his death in 2006, turned Trebbiano d'Abruzzo — a name usually attached to ordinary wine — into a reference white, through severe selection in the vineyard and minimal intervention in the cellar, with long ageing in large Slavonian oak. He sold only a fraction of the crop as estate wine, and only in vintages he judged worthy — roughly seven years in ten.`, `His son Francesco Paolo continues the same approach, working with his family. The estate says little about method, putting the emphasis squarely on old vines and the vineyard, and remains deliberately resistant to publicity.`], winemaker:{ name:`Francesco Paolo Valentini`, title:`Proprietor & winemaker`, bio:[`Francesco Paolo Valentini took over on the death of his father Edoardo in 2006, and critics broadly agree he has maintained — and arguably raised — the estate's standing. The house style is unchanged: extremely low yields, old tendone-trained vines, a long élevage in large old Slavonian botti, and a refusal to bottle the estate wine in lesser years.`, `The family is famously reticent about technique, and even the precise grape identity has been debated — Edoardo always insisted on the true Trebbiano d'Abruzzo, while some writers, including Jancis Robinson, have linked the wine to Bombino Bianco. What is not in doubt is the result: a dense, mineral, long-lived white routinely ranked among Italy's greatest.`] }, critics:[{ who:`Jancis Robinson`, note:`Robinson has characterised the wine as "one of Italy's most distinctive dry white wines," and her team scores recent vintages around 17.5/20.`, url:`https://www.jancisrobinson.com/producers/valentini` }, { who:`Ian D'Agata`, score:`96`, context:`2020 vintage`, note:`D'Agata gave a complex note of beeswax, chamomile and citrus with rising minerality and called it "always one of Italy's best white wines."`, url:`https://whwc.com/valentini-trebbiano-dabruzzo-2020/` }, { who:`James Suckling`, score:`97`, context:`2020 vintage`, note:`Suckling found a bone-dry, saline wine of lime peel, green apple and chalky minerality with zesty acidity and real weight.`, url:`https://whwc.com/valentini-trebbiano-dabruzzo-2020/` }, { who:`Eric Guido · Vinous`, score:`95+`, context:`2020 vintage`, note:`Guido described a savory, mineral wine of raw almond, smoky stone and dried nectarine — "simply spellbinding" — fresh and lightly structured.`, url:`https://whwc.com/valentini-trebbiano-dabruzzo-2020/` }, { who:`Antonio Galloni · Vinous`, note:`Galloni and Neal Martin both review the wine at Vinous; Galloni's scores have reached the low-to-mid 90s, in line with its status as a benchmark Abruzzo white.`, url:`https://www.wine-lister.com/wine/azienda-agricola-valentini-trebbiano-d-abruzzo` }], criticsNote:`The specific scores above are for the acclaimed 2020; the 2021 in this portfolio shares the same provenance and house style. Critics often compare the wine to fine white Burgundy for its depth and longevity.`, references:[{ label:`2020 — D’Agata, Suckling, Guido notes`, source:`Woodland Hills Wine Co.`, url:`https://whwc.com/valentini-trebbiano-dabruzzo-2020/` }, { label:`Producer reviews`, source:`JancisRobinson.com`, url:`https://www.jancisrobinson.com/producers/valentini` }, { label:`An enigma in Abruzzo`, source:`Wine Spectator`, url:`https://www.winespectator.com/articles/azienda-agricola-valentini-an-enigma-in-abruzzo-42961` }], wines:[`valentini-trebbiano`] },
+
+  gravner: { id:`gravner`, name:`Gravner`, region:`friuli`, place:`Oslavia, Collio`, founded:`1901`, lede:`The estate that revived amphora-aged amber wine in modern Italy, working only Ribolla Gialla and Pignolo.`, history:[`The Gravner farm at Oslavia, in the Collio hills on the Slovenian border, dates to 1901. A 1987 trip to California convinced Joško Gravner that technology was flattening wine; a 1996 hailstorm that destroyed most of his crop pushed him further toward older, simpler methods.`, `From 1997 he returned to long skin-contact fermentation, and after travelling to Georgia in 2000 he began fermenting in qvevri — clay amphorae buried in the cellar — converting fully in the years that followed. He is widely regarded as the figure who revived amber, or "orange," wine in modern Italy, though he prefers the term amber.`, `The method is uncompromising: native-yeast fermentation on the skins in buried amphorae, months of further rest in amphora, then years in large oak, bottled unfined and unfiltered. Gravner follows a "rule of seven" in his long ageing. The estate, farmed biodynamically, now plants only Ribolla Gialla and the red Pignolo, and his daughter Mateja is closely involved.`], winemaker:{ name:`Joško Gravner`, title:`Winemaker, with daughter Mateja`, bio:[`Joško Gravner spent the 1980s and early 1990s making technically polished modern whites before reversing course entirely. After the California trip and the 1996 hail, he abandoned stainless steel and temperature control, returning to skin-contact fermentation and then to Georgian qvevri after visiting Kakheti in 2000.`, `His Ribolla Gialla ferments and macerates on its skins in buried amphorae, rests there for several more months, and then ages for around six years in large oak before release, unfined and unfiltered. The estate is farmed biodynamically and planted only to Ribolla Gialla and the native red Pignolo. Gravner is candid that he makes wine to his own convictions rather than to please critics; his daughter Mateja now works closely alongside him.`] }, critics:[{ who:`Antonio Galloni · Vinous`, note:`Vinous reviews the amphora Ribolla across vintages, treating Gravner as a reference point for the category and tracking the wine's slow evolution over many years in bottle.`, url:`https://vinous.com/wines/gravner-2003-ribolla-gialla-amphora` }, { who:`James Suckling`, note:`Suckling has described the Ribolla in terms of candied orange, honey and caramel over a full, layered, "round and captivating" texture, recommending it served warmer than a conventional white.`, url:`https://www.wine-searcher.com/find/gravner+ribolla+friuli+venezia+giulia+igp+italy` }, { who:`Wine Spectator`, note:`A profile titled "The Wizard of Oslavia" set out Gravner's role in reviving amber wine, an account widely echoed in his standing as the category's benchmark producer.`, url:`https://www.winespectator.com/articles/the-wizard-of-oslavia-winemaker-josko-gravner` }], criticsNote:`Gravner's wines divide opinion by design and are released with long bottle age; published scores for the exact 2018 are limited, so the notes above reflect the producer's overall critical standing.`, references:[{ label:`The Wizard of Oslavia`, source:`Wine Spectator`, url:`https://www.winespectator.com/articles/the-wizard-of-oslavia-winemaker-josko-gravner` }, { label:`Ribolla Gialla Amphora — reviews`, source:`Vinous`, url:`https://vinous.com/wines/gravner-2003-ribolla-gialla-amphora` }, { label:`Interview with Joško Gravner`, source:`Sprudge`, url:`https://sprudge.com/josko-gravner-the-sprudge-wine-interview-173928.html` }], wines:[`gravner-ribolla`] },
+
+  pantelleria: { id:`pantelleria`, name:`Tua Rita`, region:`sicilia`, place:`Pantelleria · Suvereto (Toscana)`, founded:1984, lede:`A Tuscan estate of cult reputation that, since 2016, also makes a Zibibbo passito on the volcanic island of Pantelleria.`, history:[`Tua Rita was founded in 1984 by Rita Tua and her husband Virgilio Bisti at Località Notri, just south of Suvereto, in the Val di Cornia on the coastal side of Tuscany's Colline Metallifere. What began as a smallholding became one of Italy's most collected estates after its first high-end wine, the Bordeaux-blend Giusto di Notri, appeared in 1992.`, `Its reputation rests on powerful, polished reds: the 100% Merlot Redigaffi — whose 2000 vintage was the first Italian wine awarded a perfect 100 points by Robert Parker — alongside Giusto di Notri and the Syrah Per Sempre. After Virgilio Bisti's death in 2010 the estate passed to his daughter Simena and her husband Stefano Frascolla; their son Giovanni Frascolla took the helm in 2020.`, `In 2016 the family acquired vineyards on Pantelleria, the volcanic island in the Strait of Sicily roughly midway between Sicily and Tunisia, to make a single sweet wine, Sese. It is a project away from their Tuscan base rather than the estate's core, and it is this island wine — not the Suvereto reds — that appears in this portfolio.`, `Pantelleria has been a DOC since 1971, the grapes grown in low "alberello pantesco" bush vines set in hollows against the relentless wind — a cultivation method inscribed by UNESCO in 2014. The name Sese refers to the dry-stone constructions found across the island's vineyards.`], winemaker:{ name:`Luca D’Attoma & Marco Lamastra`, title:`Consulting enologist & estate winemaker`, bio:[`Tua Rita's wines are made by estate winemaker Marco Lamastra with the consulting enologist Luca D'Attoma, a long-standing collaborator credited by James Suckling and others with shaping the house style. The estate is owned and directed by the Frascolla family — Stefano and Simena, and since 2020 their son Giovanni.`, `The reds that made the estate's name were born "garage-iste," as Stefano Frascolla has put it, from a small garage cellar in the 1990s; the first Redigaffi was made from just a couple of barrels. The Pantelleria project applies the same idea of small-scale, detail-driven winemaking to Zibibbo (Muscat of Alexandria): bunches are sun-dried for several days to concentrate the sugars, then the wine is finished and rested before release as the passito Sese.`] }, critics:[{ who:`Robert Parker · The Wine Advocate`, score:`100`, context:`Redigaffi 2000 (estate landmark)`, note:`Parker's perfect score for the 2000 Redigaffi made it the first Italian wine ever to receive 100 points from The Wine Advocate — the moment that turned a family hobby into a cult estate.`, url:`https://vinconnect.com/wineries/tua-rita/` }, { who:`James Suckling`, note:`Suckling, tasting a 26-vintage Redigaffi vertical, has rated the wine at the very top over decades and noted the estate's recent expansion into a Pantelleria passito among its newer wines.`, url:`https://www.jamessuckling.com/wine-tasting-reports/tua-rita-redigaffi-vertical-toward-precision-and-purity` }], criticsNote:`Sese is a recent, small-production Pantelleria wine with limited published critic scores so far; the estate's documented critical standing rests on its Suvereto reds, above all Redigaffi.`, references:[{ label:`Sese — producer page`, source:`Tua Rita`, url:`https://www.tuarita.it/vini/sese/?lang=en` }, { label:`Redigaffi vertical & the wider range`, source:`JamesSuckling.com`, url:`https://www.jamessuckling.com/wine-tasting-reports/tua-rita-redigaffi-vertical-toward-precision-and-purity` }, { label:`Tua Rita producer profile`, source:`Decanter`, url:`https://www.decanter.com/premium/tua-rita-producer-profile-395943/` }], wines:[`pantelleria-passito`] },
+
+};
+
+/* ------------------------------------------------------------------ */
+
+const WINES = {
+  'contratto-pasdose':{
+    id:'contratto-pasdose', producer:'contratto',
+    name:'Metodo Classico Special Cuvée Pas Dosé', vintage:'2009', format:'Magnum (1.5 L)',
+    appellation:'Spumante Metodo Classico, Piemonte',
+    grapes:'Pinot Nero with a small proportion of Chardonnay',
+    bottle:{ silhouette:'sparkling', glass:'#243a23', wine:'#e7c878', label:'#f1ece0', accent:'#dd4a18' },
+    tasting:"Fine, persistent mousse. Citrus and orchard fruit lead, with brioche, toasted almond and a touch of honey from extended lees ageing. Zero dosage leaves a dry, chalky, savoury finish; the magnum format favours slow, even development.",
+    production:"Bottle-fermented in the traditional method and given long ageing on the lees, with hand riddling and no dosage (pas dosé). This 2009 predates the estate's high Alta Langa vineyards, developed from 2014, so the base wine was sourced; the house style of dry, long-aged, vintage sparkling is already in place.",
+    vintageNote:"2009 was a warm Piedmont vintage, giving a riper, broader sparkling wine. The absence of dosage keeps it taut and dry despite the ripeness, and the magnum is well suited to keeping.",
+  },
+  'ceretto-gallina':{
+    id:'ceretto-gallina', producer:'ceretto',
+    name:'Barbaresco Gallina', vintage:'2018', format:'750 ml',
+    appellation:'Barbaresco DOCG',
+    grapes:'Nebbiolo',
+    bottle:{ silhouette:'burgundy', glass:'#3b1e22', wine:'#7a2230', label:'#efe9dd', accent:'#dd4a18' },
+    tasting:"Red cherry and wild strawberry with rose petal and sweet spice. Medium-bodied, with fine-grained tannin and a savoury, slightly earthy finish — perfumed rather than powerful.",
+    production:"From Gallina, a cru in the commune of Neive on the eastern side of Barbaresco; Ceretto acquired a small plot here in 2015, making this an early release from the site. Organically and biodynamically farmed Nebbiolo, fermented and aged in large oak casks.",
+    vintageNote:"2018 was a cooler, wetter and more variable Barbaresco vintage than the structured 2016. The wines tend to be fresher and more aromatic, accessible earlier; this favours Gallina's perfume.",
+  },
+  'fortemasso-castelletto':{
+    id:'fortemasso-castelletto', producer:'fortemasso',
+    name:'Barolo Castelletto', vintage:'2016', format:'750 ml',
+    appellation:'Barolo DOCG',
+    grapes:'Nebbiolo',
+    bottle:{ silhouette:'burgundy', glass:'#3b1e22', wine:'#7e2533', label:'#efe9dd', accent:'#dd4a18' },
+    tasting:"Rose, red cherry and raspberry over tar and liquorice. Firm but refined tannin, fresh acidity and a long, savoury finish — built for the cellar.",
+    production:"Single-vineyard Nebbiolo from the Castelletto MGA in Monforte d'Alba, on sandy Diano sandstone soils. Maceration of around 25–30 days, then roughly 30 months in large Slavonian oak casks. The style is deliberately contemporary and restrained.",
+    vintageNote:"2016 is widely regarded as a benchmark Barolo vintage: a long, even season gave wines with depth, fine tannin and freshness, and considerable ageing potential.",
+  },
+  'argentiera-superiore':{
+    id:'argentiera-superiore', producer:'argentiera',
+    name:'Argentiera Bolgheri Superiore', vintage:'2020', format:'750 ml',
+    appellation:'Bolgheri DOC Superiore',
+    grapes:'Cabernet Sauvignon, Merlot and Cabernet Franc',
+    bottle:{ silhouette:'bordeaux', glass:'#2b1418', wine:'#5e1b25', label:'#1d1d1b', accent:'#dd4a18' },
+    tasting:"Blackcurrant and dark plum with Mediterranean herb, graphite and a little sweet spice. Ripe but fine-grained tannin, with a coastal freshness on the finish.",
+    production:"The estate's flagship, first made in 2003: a Bordeaux blend from the high, sea-facing vineyards of southern Bolgheri, handled gently and aged around 14–16 months in French oak (225 L) plus bottle ageing before release.",
+    vintageNote:"2020 in Bolgheri was dry but without excessive heat — a balanced season. The wines are fragrant and relatively approachable, with the fresh acidity that the site's altitude and sea breezes tend to give.",
+  },
+  'monsanto-ilpoggio':{
+    id:'monsanto-ilpoggio', producer:'monsanto',
+    name:'Chianti Classico Gran Selezione Il Poggio', vintage:'2018', format:'750 ml',
+    appellation:'Chianti Classico DOCG Gran Selezione',
+    grapes:'Sangiovese with Canaiolo and Colorino',
+    bottle:{ silhouette:'bordeaux', glass:'#2b1418', wine:'#641d27', label:'#efe9dd', accent:'#dd4a18' },
+    tasting:"Sour cherry and redcurrant with dried herb, orange peel and tobacco. Bright acidity and savoury, slightly grippy tannin; classic in proportion and built to age.",
+    production:"From the historic Il Poggio vineyard — the first single-vineyard Chianti Classico, first bottled in 1962. Predominantly Sangiovese with Canaiolo and Colorino, fermented in steel and aged in large Slavonian oak casks.",
+    vintageNote:"2018 was a cooler, wetter and more classic Chianti Classico vintage. The wines are fresher and more perfumed, medium-weight rather than dense — a register that suits Il Poggio's traditional style.",
+  },
+  'bucci-riserva':{
+    id:'bucci-riserva', producer:'bucci',
+    name:'Villa Bucci Riserva', vintage:'2008', format:'750 ml',
+    appellation:'Castelli di Jesi Verdicchio Classico Riserva DOCG',
+    grapes:'Verdicchio',
+    bottle:{ silhouette:'burgundy', glass:'#5f6a32', wine:'#d8c873', label:'#efe9dd', accent:'#dd4a18' },
+    tasting:"Now mature: citrus and orchard fruit have given way to honey, almond, dried herb and a saline, stony finish. Full but taut, with the length and grip of a serious wine.",
+    production:"100% Verdicchio from the oldest estate parcels, each vinified separately and aged for around two years in large, old (effectively neutral) Slavonian oak casks. The Riserva is made only in stronger vintages.",
+    vintageNote:"At more than fifteen years old, the 2008 shows what this wine is built for: Verdicchio that ages like a structured white, trading primary fruit for savoury, developed complexity.",
+  },
+  'valentini-trebbiano':{
+    id:'valentini-trebbiano', producer:'valentini',
+    name:"Trebbiano d'Abruzzo", vintage:'2021', format:'750 ml',
+    appellation:"Trebbiano d'Abruzzo DOC",
+    grapes:'Trebbiano (Abruzzese)',
+    bottle:{ silhouette:'burgundy', glass:'#6a6f3a', wine:'#e3d27d', label:'#f1ece0', accent:'#dd4a18' },
+    tasting:"Young and tightly wound: lemon, white peach and almond over herbs and a marked saline minerality. Waxy texture, firm acidity and notable length. A wine that rewards keeping.",
+    production:"From old vines, with only a small share of the harvest selected for bottling. Traditional vinification and long ageing in large old oak casks; the family bottles to no fixed schedule and says little about method, putting the emphasis on the vineyard.",
+    vintageNote:"2021 was a fairly classic Abruzzo season. The wine is released young and is built to develop over many years, as Valentini's Trebbiano characteristically does.",
+  },
+  'gravner-ribolla':{
+    id:'gravner-ribolla', producer:'gravner',
+    name:'Ribolla Gialla', vintage:'2018', format:'750 ml',
+    appellation:'Venezia Giulia IGT',
+    grapes:'Ribolla Gialla',
+    bottle:{ silhouette:'heavy', glass:'#caa15a', wine:'#b06a23', label:'#efe9dd', accent:'#dd4a18' },
+    tasting:"An amber wine with the frame of a red: dried apricot, orange peel, black tea, nuts and beeswax. Gentle tannic grip, savoury and distinctly textural, long on the finish.",
+    production:"100% Ribolla Gialla fermented on its skins with wild yeasts in buried Georgian amphorae for several months, then aged for years in large Slavonian oak and bottled unfiltered — roughly a seven-year cycle before release.",
+    vintageNote:"Released only after long ageing, in the consistent house style. The method, more than the season, defines the wine; vintage differences read as nuance within an established frame.",
+  },
+  'pantelleria-passito':{
+    id:'pantelleria-passito', producer:'pantelleria',
+    name:'Sese', vintage:'2022', format:'500 ml',
+    appellation:'Passito di Pantelleria DOC',
+    grapes:'Zibibbo (Muscat of Alexandria)',
+    bottle:{ silhouette:'dessert', glass:'#c98a2c', wine:'#8a4a12', label:'#f1ece0', accent:'#dd4a18' },
+    tasting:"Deep golden to amber, with dried apricot, fig, raisin and candied orange, set against honey, almond and Mediterranean herb. Full-bodied and sweet but drawn long by vivid acidity, finishing gently bitter and saline rather than cloying.",
+    production:"100% Zibibbo grown on Pantelleria. The bunches are dried in the island sun for roughly five to seven days to concentrate sugars, then vinified, with the wine finished in stainless steel for around eighteen months — a fresher, fruit-driven reading of the style.",
+    vintageNote:"From vineyards Tua Rita acquired on Pantelleria in 2016. The hot, dry, wind-exposed island climate and volcanic soils give the concentration; 2022 is a young release, well suited to keeping.",
+  },
+};
+
+if (typeof window !== 'undefined') {
+  window.DATA = { PRODUCERS, WINES };
+}
+
+</script>
+<script>
+/* ------------------------------------------------------------------ *
+ *  bottles.js — generates a clean, stylised SVG bottle illustration.
+ *  No real label artwork is reproduced; labels are typeset from data.
+ * ------------------------------------------------------------------ */
+
+const BOTTLE_SHAPES = {
+  bordeaux: { d:"M52,44 L52,118 C52,126 46,128 40,134 L20,150 C16,154 14,158 14,166 L14,330 Q14,344 28,344 L92,344 Q106,344 106,330 L106,166 C106,158 104,154 100,150 L80,134 C74,128 68,126 68,118 L68,44 Z",
+              neck:[44,120], label:[24,214,72,94] },
+  burgundy: { d:"M53,44 L53,112 C53,120 40,126 32,140 C22,156 16,166 16,180 L16,330 Q16,344 30,344 L90,344 Q104,344 104,330 L104,180 C104,166 98,156 88,140 C80,126 67,120 67,112 L67,44 Z",
+              neck:[44,112], label:[24,220,72,90] },
+  sparkling:{ d:"M50,38 L50,108 C50,118 38,124 30,140 C20,156 14,168 14,184 L14,330 Q14,346 30,346 L90,346 Q106,346 106,330 L106,184 C106,168 100,156 90,140 C82,124 70,118 70,108 L70,38 Z",
+              neck:[42,110], label:[24,224,72,92] },
+  heavy:    { d:"M52,46 L52,110 C52,120 36,126 28,144 C18,160 12,172 12,188 L12,328 Q12,344 28,344 L92,344 Q108,344 108,328 L108,188 C108,172 102,160 92,144 C84,126 68,120 68,110 L68,46 Z",
+              neck:[44,112], label:[20,214,80,96] },
+  dessert:  { d:"M53,86 L53,150 C53,158 47,160 41,166 L24,180 C20,184 18,188 18,196 L18,326 Q18,340 32,340 L88,340 Q102,340 102,326 L102,196 C102,188 100,184 96,180 L79,166 C73,160 67,158 67,150 L67,86 Z",
+              neck:[86,150], label:[24,228,72,78] },
+};
+
+function wrapText(str, max){
+  const words = String(str).split(' ');
+  const lines = []; let cur = '';
+  for(const w of words){
+    if((cur + ' ' + w).trim().length > max){ if(cur) lines.push(cur); cur = w; }
+    else cur = (cur + ' ' + w).trim();
+  }
+  if(cur) lines.push(cur);
+  return lines.slice(0,3);
+}
+
+function buildBottle(spec){
+  const s = BOTTLE_SHAPES[spec.silhouette] || BOTTLE_SHAPES.burgundy;
+  const id = 'b' + Math.random().toString(36).slice(2,8);
+  const [neckTop, neckBottom] = s.neck;
+  const [lx, ly, lw, lh] = s.label;
+  const glass = spec.glass || '#3b1e22';
+  const wine  = spec.wine  || glass;
+  const label = spec.label || '#efe9dd';
+  const accent = spec.accent || '#dd4a18';
+  const labelDark = (label === '#1d1d1b' || label === '#1b1b1a');
+  const ink = labelDark ? '#efe9dd' : '#1d1d1b';
+  const sub = labelDark ? 'rgba(239,233,221,.6)' : 'rgba(29,29,27,.55)';
+
+  const prodName = (spec.producerName || '').toUpperCase();
+  const prodAvail = lw - 10;                        // inner label width
+  // mono advance ~0.62*fs + tracking; solve for a font-size that fits
+  let prodFs = 6.4, prodLs = 1.2;
+  const prodW = n => prodName.length * 0.62 * n + Math.max(0, prodName.length-1) * (n/6.4*1.2);
+  if (prodW(prodFs) > prodAvail){
+    prodLs = 0.4;
+    prodFs = Math.max(4.2, prodAvail / (prodName.length * 0.62 + Math.max(0, prodName.length-1) * 0.07));
+  }
+
+  // wine name: wrap, then size down if the longest line is too wide
+  const nameLines = wrapText(spec.wineName || '', 16);
+  const longest = nameLines.reduce((m,l)=>Math.max(m,l.length), 0);
+  let nameFs = 9.4;                                  // serif italic advance ~0.54*fs
+  if (longest * 0.54 * nameFs > prodAvail){
+    nameFs = Math.max(6.8, prodAvail / (longest * 0.54));
+  }
+  const nameLeading = nameFs * 1.28;
+  const nameStart = ly + 34 - (nameLines.length-1)*(nameLeading/2);
+  const nameTspans = nameLines.map((ln,i)=>
+    `<tspan x="${lx+lw/2}" y="${nameStart + i*nameLeading}">${escapeXml(ln)}</tspan>`).join('');
+
+  return `
+<svg viewBox="0 0 120 380" xmlns="http://www.w3.org/2000/svg" class="bottle-svg" role="img" aria-label="${escapeXml((spec.producerName||'')+' '+(spec.wineName||'')+' '+(spec.vintage||''))}">
+  <defs>
+    <clipPath id="${id}clip"><path d="${s.d}"/></clipPath>
+    <linearGradient id="${id}glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="${glass}" stop-opacity="0.78"/>
+      <stop offset="0.32" stop-color="${glass}"/>
+      <stop offset="0.62" stop-color="${shade(glass,-14)}"/>
+      <stop offset="1" stop-color="${shade(glass,-30)}"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="60" cy="362" rx="40" ry="6" fill="rgba(0,0,0,.28)"/>
+  <g clip-path="url(#${id}clip)">
+    <rect x="0" y="0" width="120" height="380" fill="url(#${id}glass)"/>
+    <rect x="0" y="${neckTop}" width="120" height="40" fill="${wine}" opacity="0.35"/>
+    <rect x="20" y="0" width="9" height="380" fill="#ffffff" opacity="0.14"/>
+    <rect x="33" y="0" width="3" height="380" fill="#ffffff" opacity="0.10"/>
+  </g>
+  <path d="${s.d}" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="1"/>
+  <!-- capsule / foil -->
+  <rect x="${spec.silhouette==='dessert'?51:48}" y="${neckTop}" width="${spec.silhouette==='dessert'?18:24}" height="${Math.min(34, neckBottom-neckTop+6)}" fill="${shade(glass,-40)}"/>
+  <rect x="${spec.silhouette==='dessert'?51:48}" y="${neckTop+Math.min(30,neckBottom-neckTop+2)}" width="${spec.silhouette==='dessert'?18:24}" height="2" fill="${accent}"/>
+  <!-- label -->
+  <rect x="${lx}" y="${ly}" width="${lw}" height="${lh}" rx="2" fill="${label}"/>
+  <rect x="${lx}" y="${ly}" width="${lw}" height="${lh}" rx="2" fill="none" stroke="rgba(0,0,0,.10)"/>
+  <line x1="${lx+10}" y1="${ly+20}" x2="${lx+lw-10}" y2="${ly+20}" stroke="${accent}" stroke-width="1.4"/>
+  <text x="${lx+lw/2}" y="${ly+14}" text-anchor="middle" fill="${ink}"
+        font-family="'Space Mono', monospace" font-size="${prodFs.toFixed(2)}" letter-spacing="${prodLs}">${escapeXml(prodName)}</text>
+  <text text-anchor="middle" fill="${ink}" font-family="'Newsreader', Georgia, serif" font-size="${nameFs.toFixed(2)}" font-style="italic">${nameTspans}</text>
+  <text x="${lx+lw/2}" y="${ly+lh-10}" text-anchor="middle" fill="${sub}"
+        font-family="'Space Mono', monospace" font-size="9" letter-spacing="2">${escapeXml(spec.vintage||'')}</text>
+</svg>`;
+}
+
+function shade(hex, amt){
+  const c = hex.replace('#','');
+  const n = parseInt(c.length===3 ? c.split('').map(x=>x+x).join('') : c, 16);
+  let r=(n>>16)+amt, g=((n>>8)&255)+amt, b=(n&255)+amt;
+  r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+function escapeXml(s){ return String(s).replace(/[<>&'"]/g, c=>({ '<':'&lt;','>':'&gt;','&':'&amp;',"'":'&#39;','"':'&quot;' }[c])); }
+
+if (typeof window !== 'undefined') window.BOTTLES = { buildBottle };
+if (typeof module !== 'undefined') module.exports = { buildBottle };
+
+</script>
+<script>
+/* ------------------------------------------------------------------ *
+ *  maps.js — builds the interactive SVG maps from window.GEO.
+ *    buildItalyMap()     → national map, active regions clickable
+ *    buildRegionMap(id)  → contiguous mesh map with delineated areas
+ * ------------------------------------------------------------------ */
+(function(){
+  const GEO = window.GEO;
+
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, c => (
+      {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]
+    ));
+  }
+
+  /* ================================================================
+     NATIONAL MAP
+     ================================================================ */
+  function buildItalyMap(){
+    const regions = GEO.ITALY_REGIONS.map(r=>{
+      const cls = r.active ? 'region active' : 'region inactive';
+      const interactive = r.active
+        ? ` tabindex="0" role="button" data-region="${r.id}" aria-label="${esc(r.name)} — view region"`
+        : ' aria-hidden="true"';
+      return `<polygon class="${cls}" points="${r.points}"${interactive}></polygon>`;
+    }).join('\n');
+
+    const labels = GEO.ITALY_REGIONS.filter(r=>r.active).map(r=>{
+      const c = centroidOfPoints(r.points);
+      const short = r.name.length > 10 ? r.name.split(/[-\s]/)[0] : r.name;
+      return `<text class="region-label on-dark" x="${c.x}" y="${c.y}" text-anchor="middle">${esc(short)}</text>`;
+    }).join('\n');
+
+    const islands = (GEO.ITALY_ISLANDS||[]).map(i=>{
+      const interactive = i.active
+        ? ` tabindex="0" role="button" data-region="${i.id}" aria-label="${esc(i.name)} — view region"`
+        : '';
+      return `<g class="island">
+        <circle class="region-dot" cx="${i.x}" cy="${i.y}" r="7"${interactive}></circle>
+        <text class="region-label" x="${i.x}" y="${i.y+24}" text-anchor="middle">${esc(i.name)}</text>
+      </g>`;
+    }).join('\n');
+
+    return `<svg class="italy-map" viewBox="${GEO.ITALY_VIEWBOX}" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Map of Italy by wine region">
+      <g>${regions}</g>
+      <g>${labels}</g>
+      ${islands}
+    </svg>`;
+  }
+
+  /* ================================================================
+     REGIONAL MESH MAP
+     ================================================================ */
+  function buildRegionMap(regionId){
+    const R = GEO.REGION_MAPS[regionId];
+    if(!R) return '';
+    const VB = '0 0 600 460';
+    const bx = R.grid.x, by = R.grid.y;
+    const x = [0, ...bx, 600], y = [0, ...by, 460];   // margin ring → context fills to the edge
+    const cols = x.length-1, rows = y.length-1;
+
+    // deterministic jitter so the mesh looks organic but renders identically
+    const jitter = (i,j) => {
+      if(i<=0||i>=cols||j<=0||j>=rows) return [0,0];        // keep frame clean
+      const h = hash(regionId+':'+i+':'+j);
+      const a = (h % 1000)/1000, b = ((h>>3) % 1000)/1000;
+      return [ (a-0.5)*12, (b-0.5)*12 ];
+    };
+    const P = [];
+    for(let i=0;i<=cols;i++){ P[i]=[]; for(let j=0;j<=rows;j++){ const [dx,dy]=jitter(i,j); P[i][j]=[x[i]+dx, y[j]+dy]; } }
+
+    const code = (c,r) => {
+      const bc=c-1, br=r-1;
+      return (br>=0 && br<by.length-1 && bc>=0 && bc<bx.length-1 && R.cells[br]) ? (R.cells[br][bc]||'.') : '.';
+    };
+    const groupOf = ch => (R.legend[ch] && R.legend[ch].group) || null;
+    const tintOf  = ch => { const g=groupOf(ch); return (g&&R.groups[g]&&R.groups[g].tint) || '#f1ece0'; };
+    const cellCentroid = (c,r) => {
+      const pts=[P[c][r],P[c+1][r],P[c+1][r+1],P[c][r+1]];
+      return [ (pts[0][0]+pts[1][0]+pts[2][0]+pts[3][0])/4, (pts[0][1]+pts[1][1]+pts[2][1]+pts[3][1])/4 ];
+    };
+
+    const producerZones = new Set((R.producers||[]).map(p=>p.zone));
+
+    // ---- land / sea context ---------------------------------------
+    // occupied (appellation) cell bounds, used to find the coastline
+    const minColRow={}, maxColRow={}, minRowCol={}, maxRowCol={};
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      if(code(c,r)==='.') continue;
+      minColRow[r]=Math.min(minColRow[r]??99,c); maxColRow[r]=Math.max(maxColRow[r]??-1,c);
+      minRowCol[c]=Math.min(minRowCol[c]??99,r); maxRowCol[c]=Math.max(maxRowCol[c]??-1,r);
+    }
+    const seaSides = R.sea ? (R.sea.side==='around' ? 'around' : [].concat(R.sea.side)) : [];
+    const isSea = (c,r)=>{
+      if(code(c,r)!=='.') return false;
+      if(seaSides==='around') return true;
+      for(const s of seaSides){
+        if(s==='left'  && c < (minColRow[r] ?? 99)) return true;
+        if(s==='right' && c > (maxColRow[r] ?? -1)) return true;
+        if(s==='top'   && r < (minRowCol[c] ?? 99)) return true;
+        if(s==='bottom'&& r > (maxRowCol[c] ?? -1)) return true;
+      }
+      return false;
+    };
+    const typeOf = (c,r)=> code(c,r)!=='.' ? 'mesh' : (isSea(c,r)?'sea':'land');
+
+    // ---- fills (whole canvas: surrounding land grey, sea blue) -----
+    let fills='';
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      const ring=`${P[c][r]} ${P[c+1][r]} ${P[c+1][r+1]} ${P[c][r+1]}`;
+      const t=typeOf(c,r);
+      if(t==='mesh'){
+        const ch=code(c,r);
+        fills+=`<polygon points="${ring}" fill="${tintOf(ch)}" stroke="${tintOf(ch)}" stroke-width="0.8"></polygon>`;
+        if(producerZones.has(ch)) fills+=`<polygon points="${ring}" fill="rgba(221,74,24,0.07)"></polygon>`;
+      } else if(t==='sea'){
+        fills+=`<polygon class="ctx-sea" points="${ring}"></polygon>`;
+      } else {
+        fills+=`<polygon class="ctx-land" points="${ring}"></polygon>`;
+      }
+    }
+
+    // ---- borders --------------------------------------------------
+    const seg = (pA,pB,cls)=>`<line x1="${pA[0].toFixed(1)}" y1="${pA[1].toFixed(1)}" x2="${pB[0].toFixed(1)}" y2="${pB[1].toFixed(1)}" class="${cls}"/>`;
+    const edgeClass = (c1,r1,c2,r2)=>{
+      const ta=typeOf(c1,r1), tb=typeOf(c2,r2);
+      if(ta==='sea' && tb==='sea') return null;
+      if(ta==='land'&& tb==='land') return null;
+      if(ta==='sea' || tb==='sea') return 'edge-coast';        // coastline
+      if(ta==='mesh'&& tb==='mesh'){
+        const a=code(c1,r1), b=code(c2,r2);
+        if(groupOf(a)!==groupOf(b)) return 'edge-appellation';
+        if(a!==b) return 'edge-commune';
+        return null;
+      }
+      return 'edge-region';                                     // focus region vs surrounding land
+    };
+    let borders='';
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      if(c+1<cols){ const cls=edgeClass(c,r,c+1,r); if(cls) borders+=seg(P[c+1][r],P[c+1][r+1],cls); }
+      if(r+1<rows){ const cls=edgeClass(c,r,c,r+1); if(cls) borders+=seg(P[c][r+1],P[c+1][r+1],cls); }
+    }
+
+    // ---- labels ----------------------------------------------------
+    // gather cells per code and per group
+    const byCode={}, byGroup={};
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      const ch=code(c,r); if(ch==='.') continue;
+      (byCode[ch]=byCode[ch]||[]).push(cellCentroid(c,r));
+      const g=groupOf(ch); if(g) (byGroup[g]=byGroup[g]||[]).push(cellCentroid(c,r));
+    }
+    const avg = arr => [ arr.reduce((s,p)=>s+p[0],0)/arr.length, arr.reduce((s,p)=>s+p[1],0)/arr.length ];
+    const codesInGroup = g => Object.keys(byCode).filter(ch=>groupOf(ch)===g);
+
+    // producer marker positions (zone centroids) — used to keep labels clear of them
+    const prodPts = (R.producers||[]).map(p => byCode[p.zone] ? avg(byCode[p.zone]) : null).filter(Boolean);
+    const nearProducer = (px,py,rad) => prodPts.some(pt => Math.hypot(pt[0]-px, pt[1]-py) < rad);
+
+    let labels='';
+    // appellation (group) labels — anchored on the part of the zone away from any marker
+    Object.keys(byGroup).forEach(g=>{
+      const grp=R.groups[g]; if(!grp||!grp.appellation) return;
+      const freeCells=[];
+      codesInGroup(g).forEach(ch=>{ if(!producerZones.has(ch)) freeCells.push(...byCode[ch]); });
+      let ctr, ly;
+      if(freeCells.length){ ctr=avg(freeCells); ly=ctr[1]; }
+      else { ctr=avg(byGroup[g]); ly=ctr[1]-34; }       // whole zone is the producer's: lift clear
+      if(nearProducer(ctr[0], ly, 50)) ly=ctr[1]-34;
+      const nearCity=(R.cities||[]).some(ci=>Math.hypot(ci.x-ctr[0], ci.y-ly)<30);
+      if(nearCity) ly-=22;
+      labels+=`<text class="r-appellation" x="${ctr[0].toFixed(0)}" y="${ly.toFixed(0)}" text-anchor="middle">${esc(grp.appellation)}</text>`;
+    });
+    // commune / area labels
+    Object.keys(byCode).forEach(ch=>{
+      if(producerZones.has(ch)) return;                 // marker already names this cell
+      const g=groupOf(ch), grp=R.groups[g];
+      const leg=R.legend[ch]; const name=leg && leg.name; if(!name || (leg&&leg.hideLabel)) return;
+      const hasAppellation = grp && grp.appellation;
+      if(hasAppellation && codesInGroup(g).length<=1) return; // group label already covers it
+      const ctr=avg(byCode[ch]);
+      if(nearProducer(ctr[0], ctr[1], 44)) return;      // avoid stacking on a marker
+      const cls = hasAppellation ? 'r-commune' : 'r-area';
+      const dy  = hasAppellation ? 10 : 0;
+      labels+=`<text class="${cls}" x="${ctr[0].toFixed(0)}" y="${(ctr[1]+dy).toFixed(0)}" text-anchor="middle">${esc(name)}</text>`;
+    });
+
+    // ---- cities ----------------------------------------------------
+    const cities=(R.cities||[]).map(ci=>`<g>
+      <circle class="r-city-dot" cx="${ci.x}" cy="${ci.y}" r="3"></circle>
+      <text class="r-city" x="${ci.x}" y="${ci.y-7}" text-anchor="middle">${esc(ci.name)}</text>
+    </g>`).join('');
+
+    // ---- producers -------------------------------------------------
+    const producers=(R.producers||[]).map(p=>{
+      const cells=byCode[p.zone]; const ctr = cells ? avg(cells) : [300,230];
+      const px=ctr[0], py=ctr[1];
+      const labelLeft = px > 360;
+      const tx = labelLeft ? px-16 : px+16;
+      const anchor = labelLeft ? 'end':'start';
+      const sub = p.sub ? `<tspan x="${tx.toFixed(0)}" dy="15" font-size="9" fill="#6c6a63">${esc(p.sub)}</tspan>` : '';
+      return `<g class="prod-marker" tabindex="0" role="button" data-producer="${p.id}" aria-label="${esc(p.name)} — view producer">
+        <circle class="ring" cx="${px.toFixed(0)}" cy="${py.toFixed(0)}" r="14"></circle>
+        <circle cx="${px.toFixed(0)}" cy="${py.toFixed(0)}" r="6.5"></circle>
+        <text x="${tx.toFixed(0)}" y="${(py+4).toFixed(0)}" text-anchor="${anchor}">${esc(p.name)}${sub}</text>
+      </g>`;
+    }).join('');
+
+    const sea = R.sea ? seaLabel(R.sea) : '';
+
+    // ---- neighbours (faint orientation labels over the context) ----
+    const neighbours=(R.neighbours||[]).map(n=>{
+      const cls = n.sea ? 'r-neigh-sea' : 'r-neigh';
+      return `<text class="${cls}" x="${n.x}" y="${n.y}" text-anchor="middle">${esc(n.name)}</text>`;
+    }).join('');
+
+    return `<svg viewBox="${VB}" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="${esc(R.title)} appellation map">
+      <g class="mesh-fills">${fills}</g>
+      <g class="mesh-borders">${borders}</g>
+      ${sea}
+      ${neighbours}
+      <g class="mesh-labels">${labels}</g>
+      <g class="mesh-cities">${cities}</g>
+      <g class="mesh-producers">${producers}</g>
+    </svg>`;
+  }
+
+  /* ---- helpers ---------------------------------------------------- */
+  function seaLabel(sea){
+    const pos = {
+      left:   {x:34,  y:230, rot:-90},
+      right:  {x:572, y:230, rot:90},
+      bottom: {x:300, y:448, rot:0},
+      top:    {x:300, y:20,  rot:0},
+    }[sea.side] || {x:300, y:448, rot:0};
+    return `<text class="r-sea" x="${pos.x}" y="${pos.y}" text-anchor="middle" transform="rotate(${pos.rot} ${pos.x} ${pos.y})">${esc(sea.label)}</text>`;
+  }
+
+  function centroidOfPoints(points){
+    const nums = points.trim().split(/\s+/).map(pair=>pair.split(',').map(Number));
+    let sx=0, sy=0;
+    nums.forEach(([x,y])=>{ sx+=x; sy+=y; });
+    return { x: Math.round(sx/nums.length), y: Math.round(sy/nums.length) };
+  }
+
+  function hash(str){
+    let h=2166136261;
+    for(let k=0;k<str.length;k++){ h^=str.charCodeAt(k); h=Math.imul(h,16777619); }
+    return (h>>>0);
+  }
+
+  window.MAPS = { buildItalyMap, buildRegionMap };
+})();
+
+</script>
+<script>
+/* ------------------------------------------------------------------ *
+ *  app.js — gate, router and view rendering.
+ * ------------------------------------------------------------------ */
+(function(){
+  "use strict";
+
+  /* ---------- configuration -------------------------------------- */
+  const PASSWORD = "barolo";          // demo only — see README for real auth
+  const UNLOCK_KEY = "iwp_unlocked";
+
+  const GEO  = window.GEO;
+  const DATA = window.DATA;
+  const MAPS = window.MAPS;
+  const BOTTLES = window.BOTTLES;
+
+  const $  = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+  function esc(s){
+    return String(s).replace(/[&<>"]/g, c => (
+      {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]
+    ));
+  }
+
+  /* ---------- gate ------------------------------------------------- */
+  function isUnlocked(){
+    try { return sessionStorage.getItem(UNLOCK_KEY) === "1"; }
+    catch(e){ return window.__unlocked === true; }
+  }
+  function setUnlocked(){
+    try { sessionStorage.setItem(UNLOCK_KEY, "1"); }
+    catch(e){ window.__unlocked = true; }
+  }
+
+  function showGate(){
+    $("#gate").hidden = false;
+    $("#app").hidden = true;
+    const input = $("#gate-input");
+    const err = $("#gate-err");
+    const submit = () => {
+      if(input.value === PASSWORD){
+        setUnlocked();
+        $("#gate").hidden = true;
+        boot();
+      } else {
+        err.textContent = "Incorrect password.";
+        input.select();
+      }
+    };
+    $("#gate-btn").addEventListener("click", submit);
+    input.addEventListener("keydown", e => { if(e.key === "Enter") submit(); });
+    input.focus();
+  }
+
+  /* ---------- router ---------------------------------------------- */
+  function parseHash(){
+    const h = location.hash.replace(/^#/, "") || "/";
+    const [path, query] = h.split("?");
+    const parts = path.split("/").filter(Boolean);   // e.g. ["region","piemonte"]
+    const params = new URLSearchParams(query || "");
+    return { parts, params };
+  }
+
+  function navigate(hash){ location.hash = hash; }
+
+  function route(){
+    if(!isUnlocked()){ showGate(); return; }
+    const { parts, params } = parseHash();
+
+    if(parts[0] === "region" && parts[1]){
+      renderRegion(parts[1]);
+    } else if(parts[0] === "producer" && parts[1]){
+      renderProducer(parts[1], params.get("tab") || "producer");
+    } else {
+      renderLanding();
+    }
+    window.scrollTo({ top:0, behavior: prefersReduced() ? "auto" : "smooth" });
+  }
+
+  function prefersReduced(){
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  /* ---------- breadcrumb ------------------------------------------ */
+  function crumbs(trail){
+    const el = $("#crumbs");
+    const parts = [`<button data-go="#/">Italy</button>`];
+    trail.forEach((t,i) => {
+      parts.push(`<span class="sep">/</span>`);
+      if(i === trail.length-1){
+        parts.push(`<span class="here">${esc(t.label)}</span>`);
+      } else {
+        parts.push(`<button data-go="${t.hash}">${esc(t.label)}</button>`);
+      }
+    });
+    el.innerHTML = parts.join("");
+    $$("button[data-go]", el).forEach(b =>
+      b.addEventListener("click", () => navigate(b.dataset.go))
+    );
+  }
+
+  /* ---------- landing (Italy map) --------------------------------- */
+  function renderLanding(){
+    crumbs([]);
+    const view = $("#view");
+    view.className = "wrap view";
+    view.innerHTML = `
+      <section class="landing">
+        <div class="landing-head">
+          <h1>A portfolio of Italian wines,<br>region by region.</h1>
+          <p>Select a highlighted region to explore its producers. Greyed regions are not part of the current selection.</p>
+        </div>
+        <div class="map-stage">${MAPS.buildItalyMap()}</div>
+        <div class="legend">
+          <span><i class="sw-active"></i>Region in portfolio</span>
+          <span><i class="sw-acc"></i>Producer location</span>
+          <span><i class="sw-off"></i>Not in selection</span>
+        </div>
+      </section>`;
+
+    $$("[data-region]", view).forEach(node => {
+      const go = () => navigate(`#/region/${node.dataset.region}`);
+      node.addEventListener("click", go);
+      node.addEventListener("keydown", e => {
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); }
+      });
+    });
+  }
+
+  /* ---------- region view ----------------------------------------- */
+  function renderRegion(regionId){
+    const R = GEO.REGION_MAPS[regionId];
+    if(!R){ navigate("#/"); return; }
+    crumbs([{ label:R.title, hash:`#/region/${regionId}` }]);
+
+    const list = (R.producers||[]).map(p => `
+      <button class="prod-card" data-producer="${p.id}">
+        <span class="n">${esc(p.name)}</span>
+        <span class="s">${esc(p.sub||"")}</span>
+      </button>`).join("");
+
+    const view = $("#view");
+    view.className = "wrap view";
+    view.innerHTML = `
+      <section class="region-view">
+        <div class="r-head">
+          <h1>${esc(R.title)}</h1>
+          <div class="r-sub">${esc(R.subtitle||"")}</div>
+        </div>
+        <div class="region-grid">
+          <div class="region-canvas">${MAPS.buildRegionMap(regionId)}</div>
+          <div class="region-list">
+            <h2>Producers in this region</h2>
+            ${list}
+          </div>
+        </div>
+      </section>`;
+
+    $$("[data-producer]", view).forEach(node => {
+      const go = () => navigate(`#/producer/${node.dataset.producer}`);
+      node.addEventListener("click", go);
+      node.addEventListener("keydown", e => {
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); }
+      });
+    });
+  }
+
+  /* ---------- producer page --------------------------------------- */
+  function renderProducer(producerId, tab){
+    const P = DATA.PRODUCERS[producerId];
+    if(!P){ navigate("#/"); return; }
+    const region = GEO.REGION_MAPS[P.region];
+    const TABS = ["producer","winemaker","wines","critics"];
+    tab = TABS.includes(tab) ? tab : "producer";
+
+    crumbs([
+      { label: region ? region.title : P.region, hash:`#/region/${P.region}` },
+      { label: P.name, hash:`#/producer/${producerId}` }
+    ]);
+
+    const view = $("#view");
+    view.className = "wrap view";
+    view.innerHTML = `
+      <article class="producer">
+        <header class="p-top">
+          <div class="p-place">${esc(P.place||"")}</div>
+          <h1>${esc(P.name)}</h1>
+          <p class="p-lede">${esc(P.lede||"")}</p>
+          ${P.founded ? `<div class="p-founded">Established ${esc(String(P.founded))}</div>` : ""}
+        </header>
+
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" data-tab="producer" aria-selected="${tab==="producer"}">The Estate</button>
+          <button class="tab" role="tab" data-tab="winemaker" aria-selected="${tab==="winemaker"}">The Winemaker</button>
+          <button class="tab" role="tab" data-tab="wines" aria-selected="${tab==="wines"}">The Wines</button>
+          <button class="tab" role="tab" data-tab="critics" aria-selected="${tab==="critics"}">Critics</button>
+        </div>
+
+        <div id="tabpane" class="tabpane"></div>
+      </article>`;
+
+    const pane = $("#tabpane", view);
+    const draw = (which) => {
+      if(which === "wines"){ pane.innerHTML = winesPane(P); mountBottles(pane, P); }
+      else if(which === "winemaker"){ pane.innerHTML = winemakerPane(P); }
+      else if(which === "critics"){ pane.innerHTML = criticsPane(P); }
+      else { pane.innerHTML = estatePane(P); }
+    };
+    draw(tab);
+
+    $$(".tab", view).forEach(btn => {
+      btn.addEventListener("click", () => {
+        const which = btn.dataset.tab;
+        $$(".tab", view).forEach(b => b.setAttribute("aria-selected", String(b===btn)));
+        // keep the hash in sync without a full re-render
+        history.replaceState(null, "", `#/producer/${producerId}?tab=${which}`);
+        draw(which);
+      });
+    });
+  }
+
+  function estatePane(P){
+    const history = (P.history||[]).map(par => `<p>${esc(par)}</p>`).join("");
+    const refs = (P.references||[]).length ? `
+      <div class="refs">
+        <h3>Sources &amp; further reading</h3>
+        <ul>${P.references.map(r => `
+          <li><a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
+            <span class="lbl">${esc(r.label)}</span>
+            <span class="src">${esc(r.source)}</span>
+          </a></li>`).join("")}</ul>
+      </div>` : "";
+    return `<div class="prose">${history}</div>${refs}`;
+  }
+
+  function winemakerPane(P){
+    const w = P.winemaker;
+    if(!w) return `<p class="prose">No winemaker information is listed for this estate.</p>`;
+    const head = `
+      <div class="wm-head">
+        <div class="wm-name">${esc(w.name||"")}</div>
+        ${w.title ? `<div class="wm-title">${esc(w.title)}</div>` : ""}
+      </div>`;
+    const bio = (w.bio||[]).map(par => `<p>${esc(par)}</p>`).join("");
+    return `${head}<div class="prose">${bio}</div>`;
+  }
+
+  function criticsPane(P){
+    const list = (P.critics||[]);
+    if(!list.length) return `<p class="prose">No critical reviews are listed for this estate.</p>`;
+    const cards = list.map(c => {
+      const score = c.score ? `<span class="crit-score">${esc(c.score)}</span>` : "";
+      const ctx = c.context ? `<span class="crit-context">${esc(c.context)}</span>` : "";
+      const link = c.url ? ` <a class="crit-src" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">source ↗</a>` : "";
+      return `
+        <div class="crit">
+          <div class="crit-head">
+            <span class="crit-who">${esc(c.who||"")}</span>
+            ${score}
+          </div>
+          ${ctx}
+          <p class="crit-note">${esc(c.note||"")}${link}</p>
+        </div>`;
+    }).join("");
+    const note = P.criticsNote ? `<p class="crit-coverage">${esc(P.criticsNote)}</p>` : "";
+    const disclaimer = `<p class="crit-foot">Assessments are summarised in our own words and scores reproduced as published; follow the source links for each critic's full review.</p>`;
+    return `<div class="crit-list">${cards}</div>${note}${disclaimer}`;
+  }
+
+  function winesPane(P){
+    const wines = (P.wines||[]).map(id => DATA.WINES[id]).filter(Boolean);
+    const blocks = wines.map(w => {
+      const note = (w.producer === "pantelleria" && P.attributionNote)
+        ? `<div class="note-flag">${esc(P.attributionNote)}</div>` : "";
+      return `
+      <div class="wine">
+        <div class="wine-visual" data-bottle="${esc(w.id)}"></div>
+        <div class="wine-meta">
+          <div class="wine-vint">${esc(w.vintage||"")}${w.format ? " · "+esc(w.format) : ""}</div>
+          <h2>${esc(w.name)}</h2>
+          <div class="wine-app">${esc(w.appellation||"")}</div>
+          ${note}
+          <dl class="spec">
+            ${row("Grapes", w.grapes)}
+            ${row("Tasting", w.tasting)}
+            ${row("Production", w.production)}
+            ${row("Vintage", w.vintageNote)}
+          </dl>
+        </div>
+      </div>`;
+    }).join("");
+    return blocks || `<p class="prose">No wines listed.</p>`;
+  }
+
+  function row(label, value){
+    if(!value) return "";
+    return `<div class="spec-row"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
+  }
+
+  function mountBottles(scope, P){
+    $$("[data-bottle]", scope).forEach(holder => {
+      const w = DATA.WINES[holder.dataset.bottle];
+      if(!w) return;
+      const b = w.bottle || {};
+      holder.innerHTML = BOTTLES.buildBottle({
+        silhouette: b.silhouette,
+        glass: b.glass, wine: b.wine, label: b.label, accent: b.accent,
+        producerName: P.name,
+        wineName: w.name,
+        vintage: w.vintage
+      });
+    });
+  }
+
+  /* ---------- boot ------------------------------------------------- */
+  function boot(){
+    $("#app").hidden = false;
+    window.addEventListener("hashchange", route);
+    route();
+  }
+
+  function start(){
+    if(isUnlocked()) boot();
+    else showGate();
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
+})();
+
+</script>
+</body>
+</html>
